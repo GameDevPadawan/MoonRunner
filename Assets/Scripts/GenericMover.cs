@@ -18,6 +18,10 @@ public class GenericMover
 
     public void MoveTowardsTarget(Vector3 currentPosition, Vector3 targetPosition, float speed, float deltaTime)
     {
-        t.position = Vector3.MoveTowards(currentPosition, targetPosition, speed * deltaTime);
+        Vector2 currentPos = new Vector2(currentPosition.x, currentPosition.z);
+        Vector2 targetPos = new Vector2(targetPosition.x, targetPosition.z);
+        Vector2 newPos = Vector2.MoveTowards(currentPos, targetPos, speed * deltaTime);
+        Vector3 nextPosition = new Vector3(newPos.x, t.position.y, newPos.y);
+        t.position = nextPosition;
     }
 }
