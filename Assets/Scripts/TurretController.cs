@@ -15,7 +15,7 @@ public class TurretController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        targetting.HandleAiming(rotation);
+        targetting.HandleAiming();
     }
 
     private void OnTriggerEnter(Collider other)

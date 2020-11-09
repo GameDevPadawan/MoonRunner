@@ -28,7 +28,7 @@ public class EnemyController : MonoBehaviour
         {
             mover.ApproachTarget(agroTarget.transform.position, 10);
         }
-        if (mover != null)
+        else if (mover != null)
         {
             mover.HandlePathMovement();
         }

@@ -6,24 +6,40 @@ using UnityEngine;
 public class TurretTargetting
 {
     private Transform turretTransform;
+    private Quaternion originalOrientation;
     private List<GameObject> targetList = new List<GameObject>();
     private GameObject currentTarget;
     private bool hasTarget => currentTarget != null;
     private bool canShoot => Time.time - timeOfLastShot > secondsBetweenShots;
     private float secondsBetweenShots;
     private float timeOfLastShot;
+    private float rotationSpeedRadians = 1;
+    private float rotationSpeedDegrees => rotationSpeedDegrees * 180 / Mathf.PI;
     public TurretTargetting(Transform turret)
     {
         turretTransform = turret;
+        originalOrientation = turretTransform.rotation;
     }
 
-    public void HandleAiming(Vector3 rotation)
+    public void HandleAiming()
     {
-        if (!hasTarget)
+        try
         {
-            currentTarget = GetTarget();
+            if (!hasTarget)
+            {
+                currentTarget = GetTarget();
+            }
+            if (currentTarget != null)
+            {
+                turretTransform.LookAt(currentTarget.transform);
+                turretTransform.rotation *= Quaternion.Euler(-90, 0, 0);
+            }
         }
-        turretTransform.rotation = Quaternion.Euler(rotation);
+        catch (System.Exception ex)
+        {
+
+            throw;
+        }
     }
 
     private GameObject GetTarget()
