@@ -5,34 +5,42 @@ using UnityEngine;
 public class TurretController : MonoBehaviour
 {
     private TurretTargetting targetting;
-    
+    public Vector3 rotation;
 
     void Awake()
     {
-        targetting = new TurretTargetting(this.transform);
+        targetting = new TurretTargetting(this.transform.GetChild(0).GetChild(8));
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        targetting.HandleAiming(rotation);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"{other.gameObject.name} entered");
-        if (targetting != null)
+        EnemyController enemy = other.GetComponent<EnemyController>();
+        if (enemy != null)
         {
-            targetting.OnTriggerEnter(other);
+            enemy.ReceiveAgro(this.gameObject);
+            if (targetting != null)
+            {
+                targetting.OnTriggerEnter(other);
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log($"{other.gameObject.name} exited");
-        if (targetting != null)
+        EnemyController enemy = other.GetComponent<EnemyController>();
+        if (enemy != null)
         {
-            targetting.OnTriggerExit(other);
+            enemy.LoseAgro();
+            if (targetting != null)
+            {
+                targetting.OnTriggerExit(other);
+            }
         }
     }
 }

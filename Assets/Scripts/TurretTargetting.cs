@@ -8,6 +8,7 @@ public class TurretTargetting
     private Transform turretTransform;
     private List<GameObject> targetList = new List<GameObject>();
     private GameObject currentTarget;
+    private bool hasTarget => currentTarget != null;
     private bool canShoot => Time.time - timeOfLastShot > secondsBetweenShots;
     private float secondsBetweenShots;
     private float timeOfLastShot;
@@ -16,11 +17,23 @@ public class TurretTargetting
         turretTransform = turret;
     }
 
-    public void HandleAiming()
+    public void HandleAiming(Vector3 rotation)
     {
-
+        if (!hasTarget)
+        {
+            currentTarget = GetTarget();
+        }
+        turretTransform.rotation = Quaternion.Euler(rotation);
     }
 
+    private GameObject GetTarget()
+    {
+        if (targetList != null && targetList.Any())
+        {
+            return targetList.First();
+        }
+        return null;
+    }
 
     public void HandleShooting()
     {
@@ -36,17 +49,12 @@ public class TurretTargetting
     public void OnTriggerEnter(Collider other)
     {
         targetList.Add(other.gameObject);
-        if (currentTarget == null) currentTarget = other.gameObject;
     }
 
     public void OnTriggerExit(Collider other)
     {
         if (currentTarget == other.gameObject) currentTarget = null;
         targetList.Remove(other.gameObject);
-        if (targetList.Count > 0)
-        {
-            currentTarget = targetList.First();
-        }
     }
     #endregion Events
 }

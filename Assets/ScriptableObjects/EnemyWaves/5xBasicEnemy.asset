@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 5xBasicEnemy
   m_EditorClassIdentifier: 
   enemies:
-  - {fileID: 2837612972579490284, guid: 548339c70dac2da448bee8b6f070e536, type: 3}
-  - {fileID: 2837612972579490284, guid: 548339c70dac2da448bee8b6f070e536, type: 3}
-  - {fileID: 2837612972579490284, guid: 548339c70dac2da448bee8b6f070e536, type: 3}
-  - {fileID: 2837612972579490284, guid: 548339c70dac2da448bee8b6f070e536, type: 3}
-  - {fileID: 2837612972579490284, guid: 548339c70dac2da448bee8b6f070e536, type: 3}
+  - {fileID: 1313804688813952878, guid: 53b80881befe63f4287bf6664edfb8e8, type: 3}
+  - {fileID: 1313804688813952878, guid: 53b80881befe63f4287bf6664edfb8e8, type: 3}
+  - {fileID: 1313804688813952878, guid: 53b80881befe63f4287bf6664edfb8e8, type: 3}
+  - {fileID: 1313804688813952878, guid: 53b80881befe63f4287bf6664edfb8e8, type: 3}
+  - {fileID: 1313804688813952878, guid: 53b80881befe63f4287bf6664edfb8e8, type: 3}

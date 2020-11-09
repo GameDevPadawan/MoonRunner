@@ -19,10 +19,14 @@ public class EnemyMover
         mover = new GenericMover(transform);
     }
 
-    public void HandleMovement()
+    public void HandlePathMovement()
     {
         if (waypointsIsNotEmpty())
         {
+            if (waypoints[currentWaypointIndex] == null)
+            {
+                return;
+            }
             mover.MoveTowardsTarget(this.transform.position, waypoints[currentWaypointIndex].transform.position, speed, Time.deltaTime);
             if (hasReachedWaypoint())
             {
@@ -35,7 +39,9 @@ public class EnemyMover
 
         bool waypointsIsNotEmpty()
         {
-            return waypoints.Length > 0;
+            if (waypoints == null) return false;
+            if (waypoints.Length < 1) return false;
+            return true;
         }
 
         bool hasReachedWaypoint()
@@ -50,5 +56,13 @@ public class EnemyMover
         {
             return currentWaypointIndex == waypoints.Length - 1;
         }
+    }
+
+    public void ApproachTarget(Vector3 targetPos, float distanceToStopFromTarget)
+    {
+        float oldLength = targetPos.magnitude;
+        targetPos.Normalize();
+        targetPos *= oldLength - distanceToStopFromTarget;
+        mover.MoveTowardsTarget(transform.position, targetPos, speed, Time.deltaTime);
     }
 }

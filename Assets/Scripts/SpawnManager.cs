@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -58,8 +59,29 @@ public class SpawnManager : MonoBehaviour
     void SpawnEnemy(GameObject prefabToSpawn, Transform spawnPoint)
     {
         var enemy = Instantiate(prefabToSpawn, spawnPoint.position, spawnPoint.rotation);
+        EnemyController enemyController = enemy.GetComponent<EnemyController>();
+        enemyController.OnDeath += OnSpawnedEnemyKilled;
         SpawnedEnemies.Add(enemy);
     }
     
-    //todo listen for enemyDeath event and remove from SpawnedEnemyList
+    void OnSpawnedEnemyKilled(object sender, GameObject gameObjectKilled)
+    {
+        SpawnedEnemies.Remove(gameObjectKilled);
+    }
+
+    private void OnDestroy()
+    {
+        if (SpawnedEnemies != null && SpawnedEnemies.Any())
+        {
+            // This is unlikely to matter, but if this object gets destroyed we must deregister all callbacks.
+            // If we do not the callbacks will still happen, but will throw a NullReferenceException
+            foreach (GameObject enemyGameObject in SpawnedEnemies)
+            {
+                if (enemyGameObject != null)
+                {
+                    enemyGameObject.GetComponent<EnemyController>().OnDeath -= OnSpawnedEnemyKilled; 
+                }
+            }
+        }
+    }
 }
