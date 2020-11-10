@@ -75,6 +75,10 @@ public class SpawnManager : MonoBehaviour
         {
             // This is unlikely to matter, but if this object gets destroyed we must deregister all callbacks.
             // If we do not the callbacks will still happen, but will throw a NullReferenceException
+            
+            //Reply : Ah i remember seeing the error and making a mental note that i have to deregister,
+            //but this was interesting to see how you went about it. p.s didnt know List.Any() existed either tbh ^^
+            
             foreach (GameObject enemyGameObject in SpawnedEnemies)
             {
                 if (enemyGameObject != null)

@@ -1,23 +1,23 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMover : MonoBehaviour
+[Serializable]
+public class PlayerMover : GenericMover
 {
 	public float speed = 6.0F;
-	private GenericMover mover;
 
-	void Awake()
+	public PlayerMover(Transform playerTransform) : base(playerTransform)
 	{
-		mover = new GenericMover(this.transform);
 	}
 
-	void Update()
+	public void HandleMovement()
 	{
 		Vector3 moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 		// normalize the vector so we do no move faster when moving diagonally
 		// Simple explanation here: http://answers.unity.com/answers/1291321/view.html
 		moveDirection.Normalize();
-		mover.MoveInDirection(moveDirection, speed, Time.deltaTime);
+		base.MoveInDirection(moveDirection, speed, Time.deltaTime);
 	}
 }

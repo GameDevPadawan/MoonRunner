@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[Serializable]
 public class TurretTargetting
 {
     private Transform turretTransform;
@@ -10,9 +12,8 @@ public class TurretTargetting
     private List<GameObject> targetList = new List<GameObject>();
     private GameObject currentTarget;
     private bool hasTarget => currentTarget != null;
-    private bool canShoot => Time.time - timeOfLastShot > secondsBetweenShots;
-    private float secondsBetweenShots;
-    private float timeOfLastShot;
+    private float lastAngleAdjustment;
+    [SerializeField]
     private float rotationSpeedRadians = 1;
     private float rotationSpeedDegrees => rotationSpeedDegrees * 180 / Mathf.PI;
     public TurretTargetting(Transform turret)
@@ -21,28 +22,35 @@ public class TurretTargetting
         originalOrientation = turretTransform.rotation;
     }
 
-    public void HandleAiming()
+    public bool IsAimedAtTarget()
     {
-        try
+        if (currentTarget == null) return false;
+        if (lastAngleAdjustment < 1)
         {
-            if (!hasTarget)
-            {
-                currentTarget = GetTarget();
-            }
-            if (currentTarget != null)
-            {
-                turretTransform.LookAt(currentTarget.transform);
-                turretTransform.rotation *= Quaternion.Euler(-90, 0, 0);
-            }
+            return true;
         }
-        catch (System.Exception ex)
+        else
         {
-
-            throw;
+            return false;
         }
     }
 
-    private GameObject GetTarget()
+    public void HandleAiming()
+    {
+        if (!hasTarget)
+        {
+            currentTarget = GetNewTarget();
+        }
+        if (currentTarget != null)
+        {
+            Quaternion oldRotation = turretTransform.rotation;
+            turretTransform.LookAt(currentTarget.transform);
+            turretTransform.rotation *= Quaternion.Euler(-90, 0, 0);
+            lastAngleAdjustment = Mathf.Abs(Quaternion.Angle(oldRotation, turretTransform.rotation));
+        }
+    }
+
+    private GameObject GetNewTarget()
     {
         if (targetList != null && targetList.Any())
         {
@@ -51,20 +59,19 @@ public class TurretTargetting
         return null;
     }
 
-    public void HandleShooting()
+    public IDamageable GetCurrentTarget()
     {
-        if (canShoot)
-        {
-            // TODO shoot
-            timeOfLastShot = Time.time;
-        }
+        return currentTarget == null ? null : currentTarget.GetComponent<IDamageable>();
     }
 
     #region Events
 
     public void OnTriggerEnter(Collider other)
     {
-        targetList.Add(other.gameObject);
+        if (!targetList.Contains(other.gameObject))
+        {
+            targetList.Add(other.gameObject); 
+        }
     }
 
     public void OnTriggerExit(Collider other)

@@ -4,18 +4,25 @@ using UnityEngine;
 
 public class TurretController : MonoBehaviour
 {
+    [SerializeField]
     private TurretTargetting targetting;
-    public Vector3 rotation;
+    [SerializeField]
+    private TurretShooting shooting;
 
     void Awake()
     {
         targetting = new TurretTargetting(this.transform.GetChild(0).GetChild(8));
+        shooting = new TurretShooting();
     }
 
     // Update is called once per frame
     void Update()
     {
         targetting.HandleAiming();
+        if (targetting.IsAimedAtTarget())
+        {
+            shooting.HandleShooting(targetting.GetCurrentTarget());
+        }
     }
 
     private void OnTriggerEnter(Collider other)

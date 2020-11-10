@@ -1,22 +1,21 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMover
+[Serializable]
+public class EnemyMover : GenericMover
 {
     public GameObject[] waypoints;
 
     int currentWaypointIndex = 0;
     float speed;
-    private Transform transform;
-    private GenericMover mover;
 
-    public EnemyMover(GameObject[] waypoints, Transform enemyTransform, float moveSpeed)
+    public EnemyMover(GameObject[] waypoints, Transform enemyTransform, float moveSpeed) : base(enemyTransform)
     {
         this.waypoints = waypoints;
         transform = enemyTransform;
         speed = moveSpeed;
-        mover = new GenericMover(transform);
     }
 
     public void HandlePathMovement()
@@ -27,7 +26,7 @@ public class EnemyMover
             {
                 return;
             }
-            mover.MoveTowardsTarget(this.transform.position, waypoints[currentWaypointIndex].transform.position, speed, Time.deltaTime);
+            base.MoveTowardsTarget(this.transform.position, waypoints[currentWaypointIndex].transform.position, speed, Time.deltaTime);
             if (hasReachedWaypoint())
             {
                 if (!atLastWaypoint())
@@ -63,6 +62,6 @@ public class EnemyMover
         float oldLength = targetPos.magnitude;
         targetPos.Normalize();
         targetPos *= oldLength - distanceToStopFromTarget;
-        mover.MoveTowardsTarget(transform.position, targetPos, speed, Time.deltaTime);
+        base.MoveTowardsTarget(transform.position, targetPos, speed, Time.deltaTime);
     }
 }

@@ -1,16 +1,19 @@
 ﻿using System;
 using UnityEngine;
-[ExecuteInEditMode]
 public class SpawnPoint : MonoBehaviour
 {
+    
     [Range(0f, 10f)]
     [SerializeField] private float lineLength;
-
-    [SerializeField] private Color lineColor;
     
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos() 
     {
-        Gizmos.color = lineColor;
-        Gizmos.DrawLine(transform.position, Vector3.forward * lineLength);
+        ShowRotationInEditor(Color.magenta);
+    }
+
+    private void ShowRotationInEditor(Color color)
+    {
+        Gizmos.color = color;
+        Gizmos.DrawRay(transform.position, Vector3.forward * lineLength);
     }
 }

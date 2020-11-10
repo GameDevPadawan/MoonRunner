@@ -61,6 +61,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb6a0186484e0ad46a4b2fb12db5f974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetting:
+    rotationSpeedRadians: 0
+  shooting:
+    damagePerShot: 1
+    secondsBetweenShots: 1
+    ammoCount: 0
+    maxAmmo: 4
 --- !u!135 &7426683345885731642
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -72,7 +79,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 5
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!54 &-2554179826340172893
 Rigidbody:

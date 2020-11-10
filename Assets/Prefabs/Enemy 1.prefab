@@ -77,6 +77,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  health:
+    maxHealth: 1
 --- !u!1001 &7913551514862143674
 PrefabInstance:
   m_ObjectHideFlags: 0
