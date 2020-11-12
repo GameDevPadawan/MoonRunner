@@ -7,25 +7,46 @@ using UnityEngine;
 [Serializable]
 public class TurretTargetting
 {
+    [SerializeField]
     private Transform turretTransform;
+    [SerializeField]
+    private Transform barrelTransform;
     private Quaternion originalOrientation;
     private List<GameObject> targetList = new List<GameObject>();
     private GameObject currentTarget;
     private bool hasTarget => currentTarget != null;
     private float lastAngleAdjustment;
+    // start debug code for weird turret rotations
+    [SerializeField]
+    private bool useCustomRotations;
+    [SerializeField]
+    private float xRotation;
+    [SerializeField]
+    private float yRotation;
+    [SerializeField]
+    private float zRotation;
+    // end debug code for weird turret rotations
     [SerializeField]
     private float rotationSpeedRadians = 1;
-    private float rotationSpeedDegrees => rotationSpeedDegrees * 180 / Mathf.PI;
-    public TurretTargetting(Transform turret)
+    private float rotationSpeedDegrees => rotationSpeedRadians * 180 / Mathf.PI;
+    private bool isInitialized = false;
+
+    public void Initialize()
     {
-        turretTransform = turret;
-        originalOrientation = turretTransform.rotation;
+        if (!isInitialized)
+        {
+            isInitialized = true;
+            originalOrientation = turretTransform.rotation; 
+        }
     }
 
     public bool IsAimedAtTarget()
     {
         if (currentTarget == null) return false;
-        if (lastAngleAdjustment < 1)
+        // hacky way to tell if we are done aiming.
+        // This will be changed once the aiming and orintation is working.
+        // It should calculate the ange between our forward and the target orientation.
+        if (lastAngleAdjustment < 0.001)
         {
             return true;
         }
@@ -37,16 +58,66 @@ public class TurretTargetting
 
     public void HandleAiming()
     {
+        Initialize();
         if (!hasTarget)
         {
             currentTarget = GetNewTarget();
         }
         if (currentTarget != null)
         {
+            RotateWholeTurretImmediately();
+            //InefficientAiming();
+        }
+    }
+
+    private void RotateWholeTurretImmediately()
+    {
+        // end debug code for weird turret rotations
+        if (useCustomRotations)
+        {
+            turretTransform.rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+        }
+        // end debug code for weird turret rotations
+        else
+        {
+            // store old rotation so we can get the amount changed for the hacky lastAngleAdjustment variable
             Quaternion oldRotation = turretTransform.rotation;
+            // Just let unity do it's thing and aim us at the target.
             turretTransform.LookAt(currentTarget.transform);
+            // We have to rotate around the y axis
+            // This would normally make sense, but watch this objects transform. The rotation shows as a z axis rotation...
+            turretTransform.rotation = Quaternion.Euler(0, turretTransform.rotation.eulerAngles.y, 0);
             turretTransform.rotation *= Quaternion.Euler(-90, 0, 0);
+            // update this for the hacky way of checking to see if we are done aiming
             lastAngleAdjustment = Mathf.Abs(Quaternion.Angle(oldRotation, turretTransform.rotation));
+        }
+    }
+
+    private void InefficientAiming()
+    {
+        // end debug code for weird turret rotations
+        if (useCustomRotations)
+        {
+            turretTransform.rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+        }
+        // end debug code for weird turret rotations
+        else
+        {
+            // store old rotation so we can get the amount changed for the hacky lastAngleAdjustment variable
+            Quaternion oldRotation = turretTransform.rotation;
+            Quaternion desiredRotation = Quaternion.LookRotation(currentTarget.transform.position - turretTransform.position);
+            float angleFromTurretToTarget = desiredRotation.eulerAngles.y - (turretTransform.rotation.eulerAngles.y - originalOrientation.eulerAngles.y);
+            if (Mathf.Abs(angleFromTurretToTarget) > 1)
+            {
+                turretTransform.Rotate(0, 0, Mathf.Sign(angleFromTurretToTarget) * rotationSpeedDegrees * Time.deltaTime);
+            }
+            lastAngleAdjustment = Mathf.Abs(Quaternion.Angle(oldRotation, turretTransform.rotation));
+            float angleFromBarrelToTarget = desiredRotation.eulerAngles.x - (barrelTransform.rotation.eulerAngles.x - originalOrientation.eulerAngles.x);
+            if (Mathf.Abs(angleFromBarrelToTarget) > 1)
+            {
+                barrelTransform.Rotate(Mathf.Sign(angleFromBarrelToTarget) * rotationSpeedDegrees * Time.deltaTime, 0, 0);
+            }
+            Debug.Log($"Turret:{angleFromTurretToTarget} | Barrel:{angleFromBarrelToTarget}");
         }
     }
 

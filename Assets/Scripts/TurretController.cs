@@ -11,8 +11,6 @@ public class TurretController : MonoBehaviour
 
     void Awake()
     {
-        targetting = new TurretTargetting(this.transform.GetChild(0).GetChild(8));
-        shooting = new TurretShooting();
     }
 
     // Update is called once per frame

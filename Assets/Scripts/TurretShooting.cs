@@ -7,9 +7,9 @@ using UnityEngine;
 public class TurretShooting
 {
     [SerializeField]
-    private float damagePerShot = 1; // TODO remove this hard coded value once we can set this in the inspector properly.
+    private float damagePerShot;
     [SerializeField]
-    private float secondsBetweenShots = 1; // TODO remove this hard coded value once we can set this in the inspector properly.
+    private float secondsBetweenShots;
     private bool canShoot => shotDelayElapsed && hasAmmo;
     private bool hasAmmo => ammoCount > 0;
     private bool shotDelayElapsed => Time.time - timeOfLastShot > secondsBetweenShots;
@@ -17,15 +17,20 @@ public class TurretShooting
     [SerializeField]
     private int ammoCount;
     [SerializeField]
-    private int maxAmmo = 4; // TODO remove this hard coded value once we can set this in the inspector properly.
+    private int maxAmmo;
+    private bool isInitialized = false;
 
-    public TurretShooting()
+    public void Initialize()
     {
-        ammoCount = maxAmmo;
+        if (!isInitialized)
+        {
+            ammoCount = maxAmmo; 
+        }
     }
 
     public void HandleShooting(IDamageable target)
     {
+        Initialize();
         if (canShoot)
         {
             ammoCount--;
