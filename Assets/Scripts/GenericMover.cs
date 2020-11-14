@@ -18,21 +18,22 @@ public class GenericMover
         transform = gameObjectTransform;
     }
 
-    protected void MoveInDirection(Vector3 direction, float speed, float deltaTime)
+    protected void MoveInDirection(Vector2 moveDirection, float speed)
     {
         if (!Enabled) return;
-        Vector3 oldPos = transform.position;
-        transform.position += direction * speed * deltaTime;
-        rotateToFaceMoveDirection(transform.position - oldPos);
+
+        float angleToTurn = moveDirection.x * Mathf.Rad2Deg * Time.deltaTime;
+        transform.Rotate(transform.up, angleToTurn);
+        transform.position += transform.forward * moveDirection.y * speed * Time.deltaTime;
     }
 
-    protected void MoveTowardsTarget(Vector3 currentPosition, Vector3 targetPosition, float speed, float deltaTime)
+    protected void MoveTowardsTarget(Vector3 currentPosition, Vector3 targetPosition, float speed)
     {
         if (!Enabled) return;
         Vector3 oldPos = transform.position;
         Vector2 currentPos = new Vector2(currentPosition.x, currentPosition.z);
         Vector2 targetPos = new Vector2(targetPosition.x, targetPosition.z);
-        Vector2 newPos = Vector2.MoveTowards(currentPos, targetPos, speed * deltaTime);
+        Vector2 newPos = Vector2.MoveTowards(currentPos, targetPos, speed * Time.deltaTime);
         Vector3 nextPosition = new Vector3(newPos.x, transform.position.y, newPos.y);
         transform.position = nextPosition;
         rotateToFaceMoveDirection(transform.position - oldPos);

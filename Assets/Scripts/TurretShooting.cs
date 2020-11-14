@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [Serializable]
 public class TurretShooting
@@ -16,6 +17,20 @@ public class TurretShooting
     private float timeOfLastShot;
     [SerializeField]
     private int ammoCount;
+    public int AmmoCount
+    {
+        get
+        {
+            return ammoCount;
+        }
+        private set
+        {
+            ammoCount = value;
+            ammoBar.fillAmount = (float)ammoCount / (float)maxAmmo;
+        }
+    }
+    [SerializeField]
+    private Image ammoBar;
     [SerializeField]
     private int maxAmmo;
     private bool isInitialized = false;
@@ -24,7 +39,8 @@ public class TurretShooting
     {
         if (!isInitialized)
         {
-            ammoCount = maxAmmo; 
+            isInitialized = true;
+            RefillAmmo();
         }
     }
 
@@ -33,7 +49,7 @@ public class TurretShooting
         Initialize();
         if (canShoot)
         {
-            ammoCount--;
+            AmmoCount--;
             target.TakeDamage(damagePerShot);
             timeOfLastShot = Time.time;
         }
@@ -41,11 +57,11 @@ public class TurretShooting
 
     public void RefillAmmo()
     {
-        ammoCount = maxAmmo;
+        AmmoCount = maxAmmo;
     }
 
     public void RefillAmmo(int amount)
     {
-        ammoCount = amount;
+        AmmoCount = amount;
     }
 }

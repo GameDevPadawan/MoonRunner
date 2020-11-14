@@ -8,14 +8,16 @@ public class EnemyMover : GenericMover
 {
     private Transform[] waypoints;
     int currentWaypointIndex = 0;
-    float speed;
+    [SerializeField]
+    float speed = 10;
+    private Vector3 vectorToTarget;
+    private Vector3 stopPoint;
 
 
-    public void Initialize(Transform[] waypoints, Transform enemyTransform, float moveSpeed)
+    public void Initialize(Transform[] waypoints, Transform enemyTransform)
     {
         base.Initialize(enemyTransform);
         this.waypoints = waypoints;
-        speed = moveSpeed;
     }
 
     public void HandlePathMovement()
@@ -26,7 +28,7 @@ public class EnemyMover : GenericMover
             {
                 return;
             }
-            base.MoveTowardsTarget(this.transform.position, waypoints[currentWaypointIndex].transform.position, speed, Time.deltaTime);
+            base.MoveTowardsTarget(this.transform.position, waypoints[currentWaypointIndex].transform.position, speed);
             if (hasReachedWaypoint())
             {
                 if (!atLastWaypoint())
@@ -59,14 +61,32 @@ public class EnemyMover : GenericMover
 
     public void ApproachTarget(Vector3 targetPos, float distanceToStopFromTarget)
     {
-        float oldLength = targetPos.magnitude;
-        targetPos.Normalize();
-        targetPos *= oldLength - distanceToStopFromTarget;
-        base.MoveTowardsTarget(transform.position, targetPos, speed, Time.deltaTime);
+        // To get the vector to the target we subtract where we are from where we need to be to get the path we need to travel.
+        vectorToTarget = targetPos - transform.position;
+        // We want to ensure we aren't moving vertically
+        vectorToTarget.y = 0;
+        // To get the step point we have to:
+        //  1. create a vector parallel to ours with a magnitude equal to the distance to stop from the target
+        //  2. subtract the parallel vector from the path we must travel. 
+        //    2.1 This has the effect of shortening the vector to target by our distance to stop from the target.
+        //  3. Add this stop position to our current position so we are using the same reference point.
+        stopPoint = vectorToTarget - (vectorToTarget.normalized * distanceToStopFromTarget) + transform.position;
+        // We want to ensure we aren't moving vertically
+        stopPoint.y = 0;
+        // Step towards the stop point based on our move speed
+        base.MoveTowardsTarget(transform.position, stopPoint, speed);
     }
 
     public void SetWaypoints(Transform[] waypoints)
     {
         this.waypoints = waypoints;
+    }
+
+    public void DrawGizmos()
+    {
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawLine(transform.position, vectorToTarget + transform.position);
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, stopPoint);
     }
 }

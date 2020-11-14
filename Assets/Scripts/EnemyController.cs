@@ -15,10 +15,15 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable
     private Health health;
     public event EventHandler<GameObject> OnDeath;
 
+    private void OnDrawGizmosSelected()
+    {
+        mover.DrawGizmos();
+    }
+
     void Awake()
     {
         health.Initialize(this.gameObject);
-        mover.Initialize(Waypoints, this.transform, 10);
+        mover.Initialize(Waypoints, this.transform);
     }
 
     void Update()
@@ -71,6 +76,6 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable
     public void SetWaypoints(Transform[] waypoints)
     {
         Waypoints = waypoints;
-        mover.Initialize(Waypoints, this.transform, 10);
+        mover.Initialize(Waypoints, this.transform);
     }
 }

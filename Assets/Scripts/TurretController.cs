@@ -4,15 +4,18 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(SphereCollider))]
-public class TurretController : MonoBehaviour, IReloadable, IRepairable
+public class TurretController : MonoBehaviour, IReloadable, IRepairable, IDamageable
 {
     [SerializeField]
     private TurretTargetting targetting;
     [SerializeField]
     private TurretShooting shooting;
+    [SerializeField]
+    private Health health;
 
     void Awake()
     {
+        health.Initialize(this.gameObject);
     }
 
     // Update is called once per frame
@@ -66,12 +69,17 @@ public class TurretController : MonoBehaviour, IReloadable, IRepairable
     #region IRepairable Implementation
     public void RepairFully()
     {
-        throw new System.NotImplementedException();
+        health.Heal();
     }
 
     public void RepairAmount(float amount)
     {
-        throw new System.NotImplementedException();
+        health.Heal(amount);
     }
     #endregion IRepairable Implementation
+
+    public void TakeDamage(float amount)
+    {
+        health.TakeDamage(amount);
+    }
 }

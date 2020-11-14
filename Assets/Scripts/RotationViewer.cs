@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RotationViewer : MonoBehaviour
 {
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         DrawAxis(transform.forward, Color.blue);
         DrawAxis(transform.right, Color.red);

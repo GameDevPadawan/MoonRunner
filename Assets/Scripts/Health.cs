@@ -1,15 +1,29 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 [Serializable]
 public class Health
 {
     public event Action FullyHealed;
-    
+    [SerializeField]
+    private Image healthBar;
     [SerializeField] 
     private float maxHealth = 1;
-    public float CurrentHealth { get; private set; }
+    private float currentHealth;
+    public float CurrentHealth
+    {
+        get
+        {
+            return currentHealth;
+        }
+        private set
+        {
+            currentHealth = value;
+            healthBar.fillAmount = currentHealth / maxHealth;
+        }
+    }
 
     public bool IsDead => CurrentHealth <= 0;
     public bool FullHealth => CurrentHealth >= maxHealth;
@@ -37,6 +51,11 @@ public class Health
         if (IsDead)
             parentObject.GetComponent<IKillable>()?.Kill();
         
+    }
+
+    public void Heal()
+    {
+        CurrentHealth = maxHealth;
     }
 
     public void Heal(float healAmount)

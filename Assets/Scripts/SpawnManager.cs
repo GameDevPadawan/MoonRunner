@@ -14,7 +14,9 @@ public class SpawnManager : MonoBehaviour
     public float timeBetweenWaves = 10f;
     public SpawnPoint[] spawnPoints;
     public EnemyWave[] waves;
-    
+
+    private float timeOfLastSpawn;
+    private float secondsBetweenSpawns = 1;
     private int _waveIndex = 0;
     private float _waveCountDown;
     private bool WaveStarted => _waveCountDown <= 0;
@@ -26,15 +28,23 @@ public class SpawnManager : MonoBehaviour
     
     private void Update()
     {
-        if (WaveStarted && _waveIndex < waves.Length)
+        if (Time.time - timeOfLastSpawn > secondsBetweenSpawns)
         {
-            SpawnWave();
-            _waveCountDown = timeBetweenWaves;
-            _waveIndex++;
+            timeOfLastSpawn = Time.time;
+            foreach (SpawnPoint spawnPoint in spawnPoints)
+            {
+                SpawnEnemy(waves[0].subWave.Skip(1).Take(1).FirstOrDefault().enemies[0], spawnPoint.transform, spawnPoint.GetPath());
+            }
         }
+        //if (WaveStarted && _waveIndex < waves.Length)
+        //{
+        //    SpawnWave();
+        //    _waveCountDown = timeBetweenWaves;
+        //    _waveIndex++;
+        //}
         
-        if(!WaveStarted && AllEnemiesDead)
-            _waveCountDown -= Time.deltaTime;
+        //if(!WaveStarted && AllEnemiesDead)
+        //    _waveCountDown -= Time.deltaTime;
     }
 
     public void SpawnWave()
