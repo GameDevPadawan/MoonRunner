@@ -12,6 +12,12 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable
     private GameObject agroTarget;
     private bool hasAgro => agroTarget != null;
     [SerializeField]
+    private float damage = 1;
+    [SerializeField]
+    private float secondsBetweenShots = 1;
+    private float timeOfLastShot;
+    private bool canShoot => Time.time - timeOfLastShot > secondsBetweenShots;
+    [SerializeField]
     private Health health;
     public event EventHandler<GameObject> OnDeath;
 
@@ -29,6 +35,32 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable
     void Update()
     {
         HandleMovement();
+        if (agroTarget != null)
+        {
+            IDisableable disableableTarget = agroTarget.GetComponent<IDisableable>();
+            if (disableableTarget != null)
+            {
+                if (disableableTarget.IsDisabled())
+                {
+                    agroTarget = null;
+                }
+            }
+        }
+        if (agroTarget != null)
+        {
+            IDamageable damageableTarget = agroTarget.GetComponent<IDamageable>();
+            if (damageableTarget != null)
+            {
+                if (canShoot && mover.hasRechedTarget) shoot(damageableTarget);
+            }
+        }
+    }
+
+    // TODO this should probably be its' own class.
+    void shoot(IDamageable damageableTarget)
+    {
+        timeOfLastShot = Time.time;
+        damageableTarget.TakeDamage(this.damage);
     }
 
     void HandleMovement()

@@ -809,11 +809,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5881009371392672366, guid: 18c5d6d6d41411e46892f5b1d9be70e1, type: 3}
   m_PrefabInstance: {fileID: 1486348571}
   m_PrefabAsset: {fileID: 0}
---- !u!20 &483934418 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 1646346890, guid: 7b837a26c451b8b47a9f9ddc7f75e25b, type: 3}
-  m_PrefabInstance: {fileID: 7183763102918425551}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &524006270
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2559,10 +2554,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 543419568, guid: e18921f2c49f19e4cb96b7b252c7e27c, type: 3}
-      propertyPath: mainCamera
-      value: 
-      objectReference: {fileID: 483934418}
     - target: {fileID: 4579182166627794274, guid: e18921f2c49f19e4cb96b7b252c7e27c, type: 3}
       propertyPath: m_RootOrder
       value: 31
@@ -3029,24 +3020,6 @@ Transform:
   m_Father: {fileID: 1510423007}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1656737017 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6910928523721784552, guid: 3bc784b661e3c8f4cb022f03aa79d62c, type: 3}
-  m_PrefabInstance: {fileID: 6910928522222292563}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &1656737018
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1656737017}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 53.270424, y: 19.321312, z: 47.996613}
-  m_Center: {x: -0.8623085, y: 9.160656, z: -2.1095734}
 --- !u!1 &1666253569
 GameObject:
   m_ObjectHideFlags: 0
@@ -4222,10 +4195,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4100537988575263584, guid: 3bc2852b6d4e01f409814509cea0e880, type: 3}
-      propertyPath: m_Materials.Array.data[3]
-      value: 
-      objectReference: {fileID: 2100000, guid: 674c079227c085642b6d048d8fc31aaa, type: 2}
     - target: {fileID: 6691324107811829022, guid: 3bc2852b6d4e01f409814509cea0e880, type: 3}
       propertyPath: m_Name
       value: Repair car
@@ -4344,10 +4313,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
-    - target: {fileID: 8537646343546272109, guid: 53b80881befe63f4287bf6664edfb8e8, type: 3}
-      propertyPath: mainCamera
-      value: 
-      objectReference: {fileID: 483934418}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53b80881befe63f4287bf6664edfb8e8, type: 3}
 --- !u!1001 &2138035409380811538
@@ -4555,10 +4520,6 @@ PrefabInstance:
     - target: {fileID: 6910928523721784552, guid: 3bc784b661e3c8f4cb022f03aa79d62c, type: 3}
       propertyPath: m_Name
       value: End
-      objectReference: {fileID: 0}
-    - target: {fileID: 6910928523721784552, guid: 3bc784b661e3c8f4cb022f03aa79d62c, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6910928523721784559, guid: 3bc784b661e3c8f4cb022f03aa79d62c, type: 3}
       propertyPath: m_RootOrder

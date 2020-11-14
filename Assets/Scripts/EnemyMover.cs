@@ -12,7 +12,7 @@ public class EnemyMover : GenericMover
     float speed = 10;
     private Vector3 vectorToTarget;
     private Vector3 stopPoint;
-
+    public bool hasRechedTarget => new Vector3(transform.position.x, 0, transform.position.z) == stopPoint;
 
     public void Initialize(Transform[] waypoints, Transform enemyTransform)
     {

@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(SphereCollider))]
-public class TurretController : MonoBehaviour, IReloadable, IRepairable, IDamageable
+public class TurretController : MonoBehaviour, IReloadable, IRepairable, IDamageable, IDisableable
 {
     [SerializeField]
     private TurretTargetting targetting;
@@ -12,6 +13,19 @@ public class TurretController : MonoBehaviour, IReloadable, IRepairable, IDamage
     private TurretShooting shooting;
     [SerializeField]
     private Health health;
+    private bool disabled;
+    private bool Disabled
+    {
+        get
+        {
+            return disabled;
+        }
+        set
+        {
+            disabled = value;
+            this.enabled = !disabled;
+        }
+    }
 
     void Awake()
     {
@@ -78,8 +92,27 @@ public class TurretController : MonoBehaviour, IReloadable, IRepairable, IDamage
     }
     #endregion IRepairable Implementation
 
+    #region IDamageable Implementation
     public void TakeDamage(float amount)
     {
         health.TakeDamage(amount);
     }
+    #endregion IDamageable Implementation
+
+    #region IDisableable Implementation
+    public void Disable()
+    {
+        Disabled = true;
+    }
+
+    public void Enable()
+    {
+        Disabled = false;
+    }
+
+    public bool IsDisabled()
+    {
+        return Disabled;
+    }
+    #endregion IDisableable Implementation
 }

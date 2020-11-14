@@ -22,6 +22,10 @@ public class Health
         {
             currentHealth = value;
             healthBar.fillAmount = currentHealth / maxHealth;
+            if (!IsDead)
+            {
+                parentObject.GetComponent<IDisableable>()?.Enable();
+            }
         }
     }
 
@@ -49,8 +53,10 @@ public class Health
         OnDamaged?.Invoke(this, parentObject);
 
         if (IsDead)
+        {
             parentObject.GetComponent<IKillable>()?.Kill();
-        
+            parentObject.GetComponent<IDisableable>()?.Disable();
+        }
     }
 
     public void Heal()
