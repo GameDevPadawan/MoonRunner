@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(SphereCollider))]
-public class TurretController : MonoBehaviour
+public class TurretController : MonoBehaviour, IReloadable, IRepairable
 {
     [SerializeField]
     private TurretTargetting targetting;
@@ -50,4 +50,28 @@ public class TurretController : MonoBehaviour
             }
         }
     }
+
+    #region IReloadable Implementation
+    public void ReloadFully()
+    {
+        shooting.RefillAmmo();
+    }
+
+    public void ReloadAmount(int amount)
+    {
+        shooting.RefillAmmo(amount);
+    }
+    #endregion IReloadable Implementation
+
+    #region IRepairable Implementation
+    public void RepairFully()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void RepairAmount(float amount)
+    {
+        throw new System.NotImplementedException();
+    }
+    #endregion IRepairable Implementation
 }

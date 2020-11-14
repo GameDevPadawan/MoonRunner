@@ -43,4 +43,9 @@ public class TurretShooting
     {
         ammoCount = maxAmmo;
     }
+
+    public void RefillAmmo(int amount)
+    {
+        ammoCount = amount;
+    }
 }
