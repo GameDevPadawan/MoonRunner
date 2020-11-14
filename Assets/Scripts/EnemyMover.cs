@@ -6,15 +6,15 @@ using UnityEngine;
 [Serializable]
 public class EnemyMover : GenericMover
 {
-    public GameObject[] waypoints;
-
+    private Transform[] waypoints;
     int currentWaypointIndex = 0;
     float speed;
 
-    public EnemyMover(GameObject[] waypoints, Transform enemyTransform, float moveSpeed) : base(enemyTransform)
+
+    public void Initialize(Transform[] waypoints, Transform enemyTransform, float moveSpeed)
     {
+        base.Initialize(enemyTransform);
         this.waypoints = waypoints;
-        transform = enemyTransform;
         speed = moveSpeed;
     }
 
@@ -63,5 +63,10 @@ public class EnemyMover : GenericMover
         targetPos.Normalize();
         targetPos *= oldLength - distanceToStopFromTarget;
         base.MoveTowardsTarget(transform.position, targetPos, speed, Time.deltaTime);
+    }
+
+    public void SetWaypoints(Transform[] waypoints)
+    {
+        this.waypoints = waypoints;
     }
 }

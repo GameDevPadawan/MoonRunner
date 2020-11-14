@@ -9,10 +9,11 @@ public class CarMover : GenericMover
     [SerializeField]
     private float speed = 20;
 
-    public CarMover(Transform t) : base(t)
+    public void Initialize(Transform carTransform)
     {
 		// We do not start sitting in a car so they should not move until we enter one.
 		base.Enabled = false;
+		base.Initialize(carTransform);
 	}
 
 	public void HandleMovement()

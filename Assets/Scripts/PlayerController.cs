@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IDamageable, IKillable, IYeetable
 {
+    [SerializeField]
     private PlayerMover mover;
     [SerializeField]
     private Health health;
@@ -14,8 +15,8 @@ public class PlayerController : MonoBehaviour, IDamageable, IKillable, IYeetable
     // Start is called before the first frame update
     void Start()
     {
-        health = new Health(this.gameObject);
-        mover = new PlayerMover(this.transform);
+        health.Initialize(this.gameObject);
+        mover.Initialize(this.transform);
     }
 
     // Update is called once per frame

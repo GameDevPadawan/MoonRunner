@@ -12,7 +12,7 @@ public class SpawnManager : MonoBehaviour
     public float timeBeforeFirstWave = 3f;
     public float timeBetweenEnemySpawns = 1f;
     public float timeBetweenWaves = 10f;
-    public Transform[] spawnPoints;
+    public SpawnPoint[] spawnPoints;
     public EnemyWave[] waves;
     
     private int _waveIndex = 0;
@@ -47,20 +47,21 @@ public class SpawnManager : MonoBehaviour
         }
     }
    
-    IEnumerator SpawnSubWave(EnemySubWave subWave, Transform spawnPoint)
+    IEnumerator SpawnSubWave(EnemySubWave subWave, SpawnPoint spawnPoint)
     {
         foreach (var enemy in subWave.enemies)
         {
-            SpawnEnemy(enemy, spawnPoint);
+            SpawnEnemy(enemy, spawnPoint.GetSpawnLocation(), spawnPoint.GetPath());
             yield return new WaitForSeconds(timeBetweenEnemySpawns);
         }
     }
 
-    void SpawnEnemy(GameObject prefabToSpawn, Transform spawnPoint)
+    void SpawnEnemy(GameObject prefabToSpawn, Transform spawnPoint, Transform[] waypoints)
     {
         var enemy = Instantiate(prefabToSpawn, spawnPoint.position, spawnPoint.rotation);
         EnemyController enemyController = enemy.GetComponent<EnemyController>();
         enemyController.OnDeath += OnSpawnedEnemyKilled;
+        enemyController.SetWaypoints(waypoints);
         SpawnedEnemies.Add(enemy);
     }
     

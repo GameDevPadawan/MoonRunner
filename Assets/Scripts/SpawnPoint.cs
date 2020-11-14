@@ -13,6 +13,11 @@ public class SpawnPoint : MonoBehaviour
         _pathNodes = gameObject.GetComponentsInChildren<Transform>();
     }
 
+    public Transform GetSpawnLocation()
+    {
+        return this.transform;
+    }
+
     public Transform[] GetPath()
     {
         return _pathNodes;

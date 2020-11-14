@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AmmoCarController : MonoBehaviour, IEnterable
 {
+    [SerializeField]
     private CarMover mover;
     private List<GameObject> passengers = new List<GameObject>();
     private bool anyPassengers => passengers.Count > 0;
@@ -31,7 +32,7 @@ public class AmmoCarController : MonoBehaviour, IEnterable
 
     void Awake()
     {
-        mover = new CarMover(this.transform);
+        mover.Initialize(this.transform);
     }
 
     // Update is called once per frame

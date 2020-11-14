@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour, IDamageable, IKillable
 {
-    public GameObject[] Waypoints;
+    [SerializeField]
+    private Transform[] Waypoints;
+    [SerializeField]
     private EnemyMover mover;
     private GameObject agroTarget;
     private bool hasAgro => agroTarget != null;
@@ -15,8 +17,8 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable
 
     void Awake()
     {
-        health = new Health(this.gameObject);
-        mover = new EnemyMover(Waypoints, this.transform, 10);
+        health.Initialize(this.gameObject);
+        mover.Initialize(Waypoints, this.transform, 10);
     }
 
     void Update()
@@ -64,5 +66,11 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable
     public void TakeDamage(float damage)
     {
         health.TakeDamage(damage);
+    }
+
+    public void SetWaypoints(Transform[] waypoints)
+    {
+        Waypoints = waypoints;
+        mover.Initialize(Waypoints, this.transform, 10);
     }
 }

@@ -13,7 +13,7 @@ public class GenericMover
     public bool Enabled = true;
     protected Transform transform;
 
-    protected GenericMover(Transform gameObjectTransform)
+    protected void Initialize(Transform gameObjectTransform)
     {
         transform = gameObjectTransform;
     }

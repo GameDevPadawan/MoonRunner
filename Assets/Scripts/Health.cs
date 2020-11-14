@@ -7,17 +7,23 @@ public class Health
 {
     public event Action FullyHealed;
     
-    [SerializeField] private float maxHealth = 1; // TODO remove this hard coded value once we can set this in the inspector properly.
+    [SerializeField] 
+    private float maxHealth = 1;
     public float CurrentHealth { get; private set; }
 
     public bool IsDead => CurrentHealth <= 0;
     public bool FullHealth => CurrentHealth >= maxHealth;
     event EventHandler<GameObject> OnDamaged;
     private GameObject parentObject;
-    public Health(GameObject parent)
+    private bool isInitialized = false;
+
+    public void Initialize(GameObject parent)
     {
-        parentObject = parent;
-        CurrentHealth = maxHealth;
+        if (!isInitialized)
+        {
+            parentObject = parent;
+            CurrentHealth = maxHealth; 
+        }
     }
 
     public void TakeDamage(float damage)

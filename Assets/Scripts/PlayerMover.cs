@@ -8,8 +8,9 @@ public class PlayerMover : GenericMover
 {
 	public float speed = 6.0F;
 
-	public PlayerMover(Transform playerTransform) : base(playerTransform)
+	public void Initialize(Transform playerTransform)
 	{
+		base.Initialize(playerTransform);
 	}
 
 	public void HandleMovement()
