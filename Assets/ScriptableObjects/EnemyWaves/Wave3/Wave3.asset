@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Wave3
   m_EditorClassIdentifier: 
   subWave:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: fab981e73f44d2f4386fe2bc0788ef1e, type: 2}
+  - {fileID: 11400000, guid: fab981e73f44d2f4386fe2bc0788ef1e, type: 2}
+  - {fileID: 11400000, guid: fab981e73f44d2f4386fe2bc0788ef1e, type: 2}

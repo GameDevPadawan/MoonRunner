@@ -21,7 +21,6 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("playing first song");
         Play("Level1SongDemo");
     }
 

@@ -40,9 +40,6 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable
     public void Kill()
     {
         health.Kill();
-        // TODO remove this add force or make it better.
-        //   It is currently quite comical, but looks like shit.
-        this.gameObject.AddComponent<Rigidbody>().AddForce(this.transform.forward * -100, ForceMode.Impulse);
         OnDeath?.Invoke(this, this.gameObject);
         // TODO is this a race condition?
         // Destroying a game object makes the unity engine return true if we run a gameObject == null check
@@ -51,7 +48,7 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable
         // Can we delay destruction long enough for the callbacks to happen?
         // Or, could we make it the subscirbers problem, meaning subscribers to OnDeath know not to check for null equality?
         // (Late addition comment: I added a delay so we can see the add force. This delay should be removed after the add force.)
-        Destroy(this.gameObject, 2);
+        Destroy(this.gameObject);
     }
 
     public void ReceiveAgro(GameObject gameObject)
