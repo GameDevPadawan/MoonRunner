@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RepairCarController : CarControllerBase
 {
+    public float AmmoInCar, MaxAmmoInCar;
     void Awake()
     {
         mover.Initialize(this.transform);
@@ -18,4 +19,13 @@ public class RepairCarController : CarControllerBase
             mover.HandleMovement(); 
         }
     }
+
+    private void OnTriggerEnter(Collider col)
+    {
+        if(col.gameObject.tag == "AmmoFactory")
+        {
+            AmmoInCar = MaxAmmoInCar;
+        }
+    }
+    
 }
