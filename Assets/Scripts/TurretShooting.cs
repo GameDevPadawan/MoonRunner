@@ -64,4 +64,9 @@ public class TurretShooting
     {
         AmmoCount = amount;
     }
+
+    public bool NeedsReload()
+    {
+        return this.AmmoCount < this.maxAmmo;
+    }
 }

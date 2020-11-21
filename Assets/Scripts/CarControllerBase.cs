@@ -16,13 +16,17 @@ public abstract class CarControllerBase : MonoBehaviour, IEnterable
     protected List<Component> interactableComponents = new List<Component>();
     protected bool controlEnabled => anyPassengers;
 
+    protected virtual void Start() { }
+    protected virtual void Awake() { }
+    protected virtual void Update() { }
+    protected virtual void FixedUpdate() { }
+
     public void Enter(GameObject passenger)
     {
         if (passenger == null) return;
         passenger.transform.parent = this.transform;
         passenger.transform.localPosition = this.transform.up;
         passengers.Add(passenger);
-        mover.Enabled = true;
     }
 
     public void Exit(GameObject passenger)
@@ -31,10 +35,6 @@ public abstract class CarControllerBase : MonoBehaviour, IEnterable
         passenger.transform.parent = null;
         passenger.transform.position = this.transform.position + (this.transform.right * 3);
         passengers.Remove(passenger);
-        if (!anyPassengers)
-        {
-            mover.Enabled = false;
-        }
     }
 
     private void OnTriggerEnter(Collider other)

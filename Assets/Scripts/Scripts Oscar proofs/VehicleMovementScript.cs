@@ -1,47 +1,42 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VehicleScript : MonoBehaviour
+[Serializable]
+public class VehicleMovementScript : MonoBehaviour
 {
-
-    
     public bool ActiveCar;
-
     public Camera CarCam;
     public bool SimpleDriving;
     public float Speed;
-    
     public float MaxSteeringAngle;
     public bool FRrot, FLrot, BRrot, BLrot;
-
     float DefaultRotX, DefaultRotZ;
-
     public float mH, mV;
-
 
     //Complex drive with wheels collider
     [Header("Put here de object with wheel collider")]
-    public WheelCollider FrontRight, BackRight, FrontLeft, BackLeft;
+    [SerializeField]
+    WheelCollider FrontRight, BackRight, FrontLeft, BackLeft;
 
     // This is for the child wheel meshes.
     [Header("Put here the childs with wheel meshes")]
-    public GameObject FRM, BRM, FLM, BLM;
+    [SerializeField]
+    GameObject FRM, BRM, FLM, BLM;
+    [SerializeField]
+    bool FourXFour;
 
-    
-    public bool FourXFour;
-    
     [Header("Don´t change the values below, only for check")]
-    public float accel;
-    public float steer;
-    public bool PlayerClose;
-
-
-
-
-
+    [SerializeField]
+    float accel;
+    [SerializeField]
+    float steer;
+    [SerializeField]
+    bool PlayerClose;
     Rigidbody rb;
-    void Start()
+
+    public void Initialize()
     {
         rb = GetComponent<Rigidbody>();
         CarCam = GetComponentInChildren<Camera>();
@@ -53,41 +48,24 @@ public class VehicleScript : MonoBehaviour
     }
 
  
-    void Update()
+    public void HandleMovement()
     {
-        if (ActiveCar == true)
-        {
-            mH = Input.GetAxis("Horizontal");
-            mV = Input.GetAxis("Vertical");
+        mH = Input.GetAxis("Horizontal");
+        mV = Input.GetAxis("Vertical");
 
-            if (SimpleDriving == false)
-            {
-                accel = Input.GetAxis("Vertical");
-                steer = Input.GetAxis("Horizontal");
-                Go();
-            }
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                UnOverturn();
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.F) && PlayerClose== true)
+        if (SimpleDriving == false)
         {
-            EnterExitCar();
+            accel = Input.GetAxis("Vertical");
+            steer = Input.GetAxis("Horizontal");
+            Go();
         }
-    }
-    void FixedUpdate()
-    {
-        if (SimpleDriving == true)
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            if (mV < 0f || mV > 0f)
-            { rb.velocity = transform.forward * mV * Speed; }
-            Quaternion wheelrotation = Quaternion.Euler(0, MaxSteeringAngle * mH * Time.deltaTime, 0);
-            rb.MoveRotation(rb.rotation * wheelrotation);
+            UnOverturn();
         }
     }
 
-    public void UnOverturn() //Desvolcar
+    void UnOverturn()
     {
         transform.rotation = new Quaternion(DefaultRotX, transform.rotation.y, DefaultRotZ,transform.rotation.w);
     }
@@ -153,6 +131,7 @@ public class VehicleScript : MonoBehaviour
 
 
     }
+
     public void EnterExitCar()
     {
         if(ActiveCar== false)
@@ -165,21 +144,5 @@ public class VehicleScript : MonoBehaviour
             CarCam.gameObject.SetActive(false);
             ActiveCar = false;
         }
-    }
-    public void OnTriggerEnter(Collider other)
-    {
-        
-        if(other.gameObject.tag == "Player" && ActiveCar==false)
-        {
-            PlayerClose = true;
-        }
-    }
-    public void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "Player" && ActiveCar == false)
-        {
-            PlayerClose = false;
-        }
-        
     }
 }

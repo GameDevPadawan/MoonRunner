@@ -11,12 +11,15 @@ public class PlayerController : MonoBehaviour, IDamageable, IKillable, IYeetable
     private Health health;
     public event EventHandler<GameObject> OnDeath;
     private List<(IEnterable enterable, GameObject gameObject)> nearbyEnterables = new List<(IEnterable, GameObject)>();
-    private bool isInIEnterable;
+    private GameObject playerCameraGameObject;
+    private bool isInIEnterable => enterableWeAreInsideOf != null;
+    private IEnterable enterableWeAreInsideOf;
     // Start is called before the first frame update
     void Start()
     {
         health.Initialize(this.gameObject);
         mover.Initialize(this.transform);
+        playerCameraGameObject = this.gameObject.GetComponentInChildren<Camera>().gameObject;
     }
 
     // Update is called once per frame
@@ -93,15 +96,19 @@ public class PlayerController : MonoBehaviour, IDamageable, IKillable, IYeetable
 
     private void EnterIEnterable(IEnterable enterable)
     {
-        isInIEnterable = true;
+        enterableWeAreInsideOf = enterable;
         mover.Enabled = false;
+        this.gameObject.GetComponent<CapsuleCollider>().enabled = false;
+        playerCameraGameObject.SetActive(false);
         enterable.Enter(this.gameObject);
     }
 
     private void ExitIEnterable(IEnterable enterable)
     {
-        isInIEnterable = false;
+        enterableWeAreInsideOf = null;
         mover.Enabled = true;
+        this.gameObject.GetComponent<CapsuleCollider>().enabled = true;
+        playerCameraGameObject.SetActive(true);
         enterable.Exit(this.gameObject);
     }
 
@@ -114,6 +121,8 @@ public class PlayerController : MonoBehaviour, IDamageable, IKillable, IYeetable
 
     private void OnTriggerExit(Collider other)
     {
+        // If ware are in an enterable we do not want to change the enterableWeAreInsideOf
+        if (isInIEnterable) return;
         if (other == null) return;
         IEnterable enterable = other.gameObject.GetComponent<IEnterable>();
         if (enterable != null) nearbyEnterables.Remove((enterable, other.gameObject));

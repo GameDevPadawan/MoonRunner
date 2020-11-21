@@ -12,9 +12,11 @@ GameObject:
   - component: {fileID: 4856603783634820836}
   - component: {fileID: 4856603783634820838}
   - component: {fileID: 1868150323}
+  - component: {fileID: 5059275573456493266}
+  - component: {fileID: 1868150328}
   m_Layer: 0
   m_Name: Ammo Factory
-  m_TagString: Untagged
+  m_TagString: AmmoFactory
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4856603783634820833}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.24, z: 39.1}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 6.783, y: 6.783, z: 6.783}
   m_Children:
   - {fileID: 5079416944658059641}
   m_Father: {fileID: 0}
@@ -68,6 +70,32 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.0658191, y: 1.0837992, z: 3.8208694}
   m_Center: {x: -1.08, y: 0.52325964, z: 0.095069885}
+--- !u!65 &5059275573456493266
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4856603783634820833}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.0200256, z: 1}
+  m_Center: {x: 0, y: 0.48664406, z: 0}
+--- !u!114 &1868150328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4856603783634820833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0de1a650b0364f043b7de28d119fcf35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reloadDelay: 3
 --- !u!1001 &4753285188401559186
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -131,6 +159,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 7d1ac4c7b032e8f49bc876cc8cc042e6, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2f13e153767560c47a5995acc0ae81d2, type: 2}
     - target: {fileID: 919132149155446097, guid: 7d1ac4c7b032e8f49bc876cc8cc042e6, type: 3}
       propertyPath: m_Name
       value: ammo factory v 1.0.

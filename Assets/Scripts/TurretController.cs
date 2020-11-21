@@ -78,6 +78,11 @@ public class TurretController : MonoBehaviour, IReloadable, IRepairable, IDamage
     {
         shooting.RefillAmmo(amount);
     }
+
+    public bool NeedsReload()
+    {
+        return shooting.NeedsReload();
+    }
     #endregion IReloadable Implementation
 
     #region IRepairable Implementation
