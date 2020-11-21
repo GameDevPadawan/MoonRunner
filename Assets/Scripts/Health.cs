@@ -11,7 +11,9 @@ public class Health
     private Image healthBar;
     [SerializeField] 
     private float maxHealth = 1;
+    public float MaxHealth => maxHealth;
     private float currentHealth;
+
     public float CurrentHealth
     {
         get
@@ -35,11 +37,15 @@ public class Health
     private GameObject parentObject;
     private bool isInitialized = false;
 
-    public void Initialize(GameObject parent)
+    public void Initialize(GameObject parent, float maximumHealth = -1)
     {
         if (!isInitialized)
         {
             parentObject = parent;
+            if (maximumHealth != -1)
+            {
+                this.maxHealth = maximumHealth;
+            }
             CurrentHealth = maxHealth; 
         }
     }

@@ -84,9 +84,12 @@ public class EnemyMover : GenericMover
 
     public void DrawGizmos()
     {
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawLine(transform.position, vectorToTarget + transform.position);
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, stopPoint);
+        if (transform != null && stopPoint != null && vectorToTarget != null)
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawLine(transform.position, vectorToTarget + transform.position);
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, stopPoint); 
+        }
     }
 }

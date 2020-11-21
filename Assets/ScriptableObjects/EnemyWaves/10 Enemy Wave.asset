@@ -10,6 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d9337c29f4989674e9158840e4ba5ff8, type: 3}
-  m_Name: EmptyWave
+  m_Name: 10 Enemy Wave
   m_EditorClassIdentifier: 
-  enemies: []
+  EnemyPrefab: {fileID: 1313804688813952878, guid: 53b80881befe63f4287bf6664edfb8e8, type: 3}
+  NumberToSpawn: 10

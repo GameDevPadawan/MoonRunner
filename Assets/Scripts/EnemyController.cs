@@ -19,7 +19,11 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable
     private bool canShoot => Time.time - timeOfLastShot > secondsBetweenShots;
     [SerializeField]
     private Health health;
+    public Health Health;
     public event EventHandler<GameObject> OnDeath;
+    [SerializeField]
+    private Enemy enemyScriptableObject;
+    public Enemy ScriptableObject => enemyScriptableObject;
 
     private void OnDrawGizmosSelected()
     {
@@ -28,7 +32,7 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable
 
     void Awake()
     {
-        health.Initialize(this.gameObject);
+        health.Initialize(this.gameObject, enemyScriptableObject.maxHealth);
         mover.Initialize(Waypoints, this.transform);
     }
 

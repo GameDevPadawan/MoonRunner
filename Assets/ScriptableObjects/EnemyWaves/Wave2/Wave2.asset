@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 669036325dc2de34488a0a2b0027f2ec, type: 3}
   m_Name: Wave2
   m_EditorClassIdentifier: 
-  subWave:
-  - {fileID: 11400000, guid: fab981e73f44d2f4386fe2bc0788ef1e, type: 2}
-  - {fileID: 0}
-  - {fileID: 11400000, guid: fab981e73f44d2f4386fe2bc0788ef1e, type: 2}
+  subWaves:
+  - {fileID: 11400000, guid: 2cbaf2239d904cd47b84264529900876, type: 2}
+  - {fileID: 11400000, guid: 2cbaf2239d904cd47b84264529900876, type: 2}
+  - {fileID: 11400000, guid: 2cbaf2239d904cd47b84264529900876, type: 2}

@@ -28,29 +28,29 @@ public class SpawnManager : MonoBehaviour
     
     private void Update()
     {
-        if (Time.time - timeOfLastSpawn > secondsBetweenSpawns)
-        {
-            timeOfLastSpawn = Time.time;
-            foreach (SpawnPoint spawnPoint in spawnPoints)
-            {
-                SpawnEnemy(waves[0].subWave.Skip(1).Take(1).FirstOrDefault().enemies[0], spawnPoint.transform, spawnPoint.GetPath());
-            }
-        }
-        //if (WaveStarted && _waveIndex < waves.Length)
+        //if (Time.time - timeOfLastSpawn > secondsBetweenSpawns)
         //{
-        //    SpawnWave();
-        //    _waveCountDown = timeBetweenWaves;
-        //    _waveIndex++;
+        //    timeOfLastSpawn = Time.time;
+        //    foreach (SpawnPoint spawnPoint in spawnPoints)
+        //    {
+        //        SpawnEnemy(waves[0].subWave.FirstOrDefault().EnemyPrefab, spawnPoint.transform, spawnPoint.GetPath());
+        //    }
         //}
-        
-        //if(!WaveStarted && AllEnemiesDead)
-        //    _waveCountDown -= Time.deltaTime;
+        if (WaveStarted && _waveIndex < waves.Length - 1)
+        {
+            SpawnWave();
+            _waveCountDown = timeBetweenWaves;
+            _waveIndex++;
+        }
+
+        if (!WaveStarted && AllEnemiesDead)
+            _waveCountDown -= Time.deltaTime;
     }
 
     public void SpawnWave()
     {
         int spawnpointIndex = 0;
-        foreach (var subWave in waves[_waveIndex].subWave)
+        foreach (var subWave in waves[_waveIndex].subWaves)
         {
             StartCoroutine(SpawnSubWave(subWave, spawnPoints[spawnpointIndex]));
             spawnpointIndex++;
@@ -59,9 +59,9 @@ public class SpawnManager : MonoBehaviour
    
     IEnumerator SpawnSubWave(EnemySubWave subWave, SpawnPoint spawnPoint)
     {
-        foreach (var enemy in subWave.enemies)
+        for (int i = 0; i < subWave.NumberToSpawn; i++)
         {
-            SpawnEnemy(enemy, spawnPoint.GetSpawnLocation(), spawnPoint.GetPath());
+            SpawnEnemy(subWave.EnemyPrefab, spawnPoint.GetSpawnLocation(), spawnPoint.GetPath());
             yield return new WaitForSeconds(timeBetweenEnemySpawns);
         }
     }
