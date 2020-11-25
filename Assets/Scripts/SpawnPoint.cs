@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 public class SpawnPoint : MonoBehaviour
 {
@@ -6,11 +7,11 @@ public class SpawnPoint : MonoBehaviour
     [Range(0f, 10f)]
     [SerializeField] private float lineLength;
 
-    private Transform[] _pathNodes;
+    private Vector3[] _pathNodes;
 
     private void Start()
     {
-        _pathNodes = gameObject.GetComponentsInChildren<Transform>();
+        _pathNodes = gameObject.GetComponentsInChildren<WaypointNode>().Select(x => x.gameObject.transform.position).ToArray();
     }
 
     public Transform GetSpawnLocation()
@@ -18,7 +19,7 @@ public class SpawnPoint : MonoBehaviour
         return this.transform;
     }
 
-    public Transform[] GetPath()
+    public Vector3[] GetPath()
     {
         return _pathNodes;
     }

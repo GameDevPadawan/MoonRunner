@@ -2,13 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class EnemyController : MonoBehaviour, IDamageable, IKillable
+public class EnemyController : MonoBehaviour, IDamageable, IKillable, IWaypointMoveable
 {
     [SerializeField]
-    private Transform[] Waypoints;
+    private Vector3[] Waypoints;
     [SerializeField]
-    private EnemyMover mover;
+    private NavMeshMover mover;
     private GameObject agroTarget;
     private bool hasAgro => agroTarget != null;
     [SerializeField]
@@ -19,7 +20,7 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable
     private bool canShoot => Time.time - timeOfLastShot > secondsBetweenShots;
     [SerializeField]
     private Health health;
-    public Health Health;
+    public Health Health => health;
     public event EventHandler<GameObject> OnDeath;
     [SerializeField]
     private Enemy enemyScriptableObject;
@@ -33,7 +34,7 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable
     void Awake()
     {
         health.Initialize(this.gameObject, enemyScriptableObject.maxHealth);
-        mover.Initialize(Waypoints, this.transform);
+        mover.Initialize(GetComponent<NavMeshAgent>(), Waypoints);
     }
 
     void Update()
@@ -55,7 +56,7 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable
             IDamageable damageableTarget = agroTarget.GetComponent<IDamageable>();
             if (damageableTarget != null)
             {
-                if (canShoot && mover.hasRechedTarget) shoot(damageableTarget);
+                if (canShoot && mover.HasReachedTarget) shoot(damageableTarget);
             }
         }
     }
@@ -72,7 +73,7 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable
         if (mover == null) return;
         if (hasAgro)
         {
-            mover.ApproachTarget(agroTarget.transform.position, 10);
+            mover.HandleTargetMovement(agroTarget.transform.position, 10);
         }
         else if (mover != null)
         {
@@ -109,9 +110,14 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable
         health.TakeDamage(damage);
     }
 
-    public void SetWaypoints(Transform[] waypoints)
+    public void SetWaypoints(Vector3[] waypoints)
     {
         Waypoints = waypoints;
-        mover.Initialize(Waypoints, this.transform);
+        mover.SetWaypoints(Waypoints);
+    }
+
+    public void SignalWaypointReached(WaypointNode waypointNodeReched)
+    {
+        ((IWaypointMoveable)mover).SignalWaypointReached(waypointNodeReched);
     }
 }

@@ -491,6 +491,7 @@ GameObject:
   - component: {fileID: 1537058523}
   - component: {fileID: 1537058522}
   - component: {fileID: 1537058521}
+  - component: {fileID: 7959629461823684906}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -568,6 +569,20 @@ MonoBehaviour:
   health:
     healthBar: {fileID: 6571989228785118742}
     maxHealth: 20
+--- !u!136 &7959629461823684906
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4579182166627794275}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 3.5
+  m_Height: 14.19
+  m_Direction: 1
+  m_Center: {x: 0, y: 3.5, z: 0}
 --- !u!1 &7935270910578591410
 GameObject:
   m_ObjectHideFlags: 0

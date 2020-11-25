@@ -66,7 +66,7 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    void SpawnEnemy(GameObject prefabToSpawn, Transform spawnPoint, Transform[] waypoints)
+    void SpawnEnemy(GameObject prefabToSpawn, Transform spawnPoint, Vector3[] waypoints)
     {
         var enemy = Instantiate(prefabToSpawn, spawnPoint.position, spawnPoint.rotation);
         EnemyController enemyController = enemy.GetComponent<EnemyController>();

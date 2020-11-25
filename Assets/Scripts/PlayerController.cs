@@ -14,18 +14,22 @@ public class PlayerController : MonoBehaviour, IDamageable, IKillable, IYeetable
     private GameObject playerCameraGameObject;
     private bool isInIEnterable => enterableWeAreInsideOf != null;
     private IEnterable enterableWeAreInsideOf;
+    private Animator animator;
     // Start is called before the first frame update
     void Start()
     {
         health.Initialize(this.gameObject);
         mover.Initialize(this.transform);
         playerCameraGameObject = this.gameObject.GetComponentInChildren<Camera>().gameObject;
+        animator = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        mover.HandleMovement();
+        // use the movement direction to set the animation move variable
+        Vector2 movement = mover.HandleMovement();
+        animator.SetFloat("MoveSpeed", movement.magnitude);
         if (Input.GetKeyDown(KeyCode.Space))
         {
             YEET();
