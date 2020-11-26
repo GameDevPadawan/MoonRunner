@@ -41,6 +41,7 @@ public class Health
     {
         if (!isInitialized)
         {
+            isInitialized = true;
             parentObject = parent;
             if (maximumHealth != -1)
             {
@@ -52,6 +53,8 @@ public class Health
 
     public void TakeDamage(float damage)
     {
+        if (!isInitialized) throw new Exception($"Health must be initialized before trying to take damage.");
+
         if (IsDead || damage <= 0)
             return;
         

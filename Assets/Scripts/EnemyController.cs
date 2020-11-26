@@ -56,7 +56,10 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable, IWaypointM
             IDamageable damageableTarget = agroTarget.GetComponent<IDamageable>();
             if (damageableTarget != null)
             {
-                if (canShoot && mover.HasReachedTarget) shoot(damageableTarget);
+                // TODO (Nate) fix enemy so they move to the target and then shoot.
+                //      This was tough because the nav agents make it hard to know when they are done moving.
+                //      For now enemies will shoot as long as they have a target.
+                if (canShoot /*&& mover.HasReachedTarget*/) shoot(damageableTarget);
             }
         }
     }

@@ -14,13 +14,19 @@ public class SpawnManager : MonoBehaviour
     public float timeBetweenWaves = 10f;
     public SpawnPoint[] spawnPoints;
     public EnemyWave[] waves;
+    
 
-    private float timeOfLastSpawn;
-    private float secondsBetweenSpawns = 1;
     private int _waveIndex = 0;
     private float _waveCountDown;
     private bool WaveStarted => _waveCountDown <= 0;
-    
+
+    [Header("Debug Tools")]
+    [SerializeField]
+    private bool spawnEnemiesContinuously;
+    private float timeOfLastSpawn;
+    [SerializeField]
+    private float secondsBetweenSpawns = 1;
+
     private void Start()
     {
         _waveCountDown = timeBeforeFirstWave;
@@ -28,23 +34,33 @@ public class SpawnManager : MonoBehaviour
     
     private void Update()
     {
-        //if (Time.time - timeOfLastSpawn > secondsBetweenSpawns)
-        //{
-        //    timeOfLastSpawn = Time.time;
-        //    foreach (SpawnPoint spawnPoint in spawnPoints)
-        //    {
-        //        SpawnEnemy(waves[0].subWave.FirstOrDefault().EnemyPrefab, spawnPoint.transform, spawnPoint.GetPath());
-        //    }
-        //}
-        if (WaveStarted && _waveIndex < waves.Length - 1)
+        if (spawnEnemiesContinuously)
+        {
+            SpawnEnemiesContinuously();
+        }
+        else if (WaveStarted && _waveIndex < waves.Length - 1)
         {
             SpawnWave();
             _waveCountDown = timeBetweenWaves;
             _waveIndex++;
+
+            if (!WaveStarted && AllEnemiesDead)
+                _waveCountDown -= Time.deltaTime;
         }
 
-        if (!WaveStarted && AllEnemiesDead)
-            _waveCountDown -= Time.deltaTime;
+        
+    }
+
+    private void SpawnEnemiesContinuously()
+    {
+        if (Time.time - timeOfLastSpawn > secondsBetweenSpawns)
+        {
+            timeOfLastSpawn = Time.time;
+            foreach (SpawnPoint spawnPoint in spawnPoints)
+            {
+                SpawnEnemy(waves[0].subWaves.FirstOrDefault().EnemyPrefab, spawnPoint.transform, spawnPoint.GetPath());
+            }
+        }
     }
 
     public void SpawnWave()

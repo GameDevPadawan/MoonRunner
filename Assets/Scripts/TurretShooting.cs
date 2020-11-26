@@ -34,6 +34,9 @@ public class TurretShooting
     [SerializeField]
     private int maxAmmo;
     private bool isInitialized = false;
+    [SerializeField]
+    private bool hasInfiniteAmmo = false;
+    public bool HasInfiniteAmmo => hasInfiniteAmmo;
 
     public void Initialize()
     {
@@ -49,7 +52,7 @@ public class TurretShooting
         Initialize();
         if (canShoot)
         {
-            AmmoCount--;
+            if (!hasInfiniteAmmo) AmmoCount--;
             target.TakeDamage(damagePerShot);
             timeOfLastShot = Time.time;
         }

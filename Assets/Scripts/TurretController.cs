@@ -47,7 +47,10 @@ public class TurretController : MonoBehaviour, IReloadable, IRepairable, IDamage
         EnemyController enemy = other.GetComponent<EnemyController>();
         if (enemy != null)
         {
-            enemy.ReceiveAgro(this.gameObject);
+            // If we have infinite ammo we should not tell the enemy to agro us.
+            // This is when the base turrets are shooting enemies.
+            // We want the enemies to shoot the base not the turrets.
+            if(!shooting.HasInfiniteAmmo) enemy.ReceiveAgro(this.gameObject);
             if (targetting != null)
             {
                 targetting.OnTriggerEnter(other);
@@ -60,7 +63,10 @@ public class TurretController : MonoBehaviour, IReloadable, IRepairable, IDamage
         EnemyController enemy = other.GetComponent<EnemyController>();
         if (enemy != null)
         {
-            enemy.LoseAgro();
+            // If we have infinite ammo we should not tell the enemy to agro us.
+            // This is when the base turrets are shooting enemies.
+            // We want the enemies to shoot the base not the turrets.
+            if (!shooting.HasInfiniteAmmo) enemy.LoseAgro();
             if (targetting != null)
             {
                 targetting.OnTriggerExit(other);
