@@ -67,6 +67,12 @@ public class NewPlayerController : MonoBehaviour, IReloadable, IDamageable, IKil
 
     private void OnTriggerEnter(Collider other)
     {
+        ICollectable otherAsCollectable = other.GetComponent<ICollectable>();
+        if (otherAsCollectable != null)
+        {
+            this.scrapCount += otherAsCollectable.Collect();
+            return;
+        }
         // TODO This adds duplicates of everything that has a matching interface.
         foreach (Type supportedInterface in supportedInteractionInterfaces)
         {

@@ -25,6 +25,8 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable, IWaypointM
     [SerializeField]
     private Enemy enemyScriptableObject;
     public Enemy ScriptableObject => enemyScriptableObject;
+    [SerializeField]
+    private GameObject[] scrapsWeCanSpawn;
 
     private void OnDrawGizmosSelected()
     {
@@ -86,6 +88,9 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable, IWaypointM
 
     public void Kill()
     {
+        // UnityEngine.Random selects a random scrap to spawn. We could replace this with a scrap pool and let it handle the random selection.
+        // We use Range from 0 to array.Length because this method uses the upper bound as exclusive instead of inclusive like the lower bound.
+        Instantiate(scrapsWeCanSpawn[UnityEngine.Random.Range(0, scrapsWeCanSpawn.Length)], this.transform.position, this.transform.rotation);
         health.Kill();
         OnDeath?.Invoke(this, this.gameObject);
         // TODO is this a race condition?

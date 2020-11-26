@@ -328,7 +328,13 @@ MonoBehaviour:
   health:
     healthBar: {fileID: 1767555816}
     maxHealth: 10
+    currentHealth: 0
   enemyScriptableObject: {fileID: 11400000, guid: 3e767507a2dc40b49934b444e378d0db, type: 2}
+  scrapsWeCanSpawn:
+  - {fileID: 1255020167765042482, guid: b4d43704faf82244da1b9b516382fda6, type: 3}
+  - {fileID: 3264579466074713947, guid: 41aa7758e208ac441bd6512f817ced33, type: 3}
+  - {fileID: 7815013683386137659, guid: 8369e510959850f438fe4abdac398120, type: 3}
+  - {fileID: 7646819086001971177, guid: 52be9a7207414a446a78148d7ca1f2e0, type: 3}
 --- !u!195 &3491339324208598159
 NavMeshAgent:
   m_ObjectHideFlags: 0
