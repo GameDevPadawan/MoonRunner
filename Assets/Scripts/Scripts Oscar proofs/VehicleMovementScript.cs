@@ -4,15 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class VehicleMovementScript : MonoBehaviour
+public class VehicleMovementScript
 {
-    public bool ActiveCar;
-    public Camera CarCam;
-    public bool SimpleDriving;
     public float Speed;
     public float MaxSteeringAngle;
     public bool FRrot, FLrot, BRrot, BLrot;
-    float DefaultRotX, DefaultRotZ;
+    public Quaternion defaultRotation;
     public float mH, mV;
 
     //Complex drive with wheels collider
@@ -36,38 +33,30 @@ public class VehicleMovementScript : MonoBehaviour
     bool PlayerClose;
     Rigidbody rb;
 
-    public void Initialize()
-    {
-        rb = GetComponent<Rigidbody>();
-        CarCam = GetComponentInChildren<Camera>();
-        CarCam.gameObject.SetActive(false);
-       
-        DefaultRotX = transform.rotation.x;
-        DefaultRotZ = transform.rotation.z;
+    private bool isInitialized;
 
+    public void Initialize(Rigidbody rigidbody)
+    {
+        if (!isInitialized)
+        {
+            isInitialized = true;
+            rb = rigidbody;
+            defaultRotation = rb.transform.rotation; 
+        }
     }
 
  
-    public void HandleMovement()
+    public void HandleMovement(Vector2 input)
     {
-        mH = Input.GetAxis("Horizontal");
-        mV = Input.GetAxis("Vertical");
-
-        if (SimpleDriving == false)
-        {
-            accel = Input.GetAxis("Vertical");
-            steer = Input.GetAxis("Horizontal");
-            Go();
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            UnOverturn();
-        }
+        if (!isInitialized) throw new Exception($"{this.GetType().Name} must be intialized by the MonoBehavior using it.");
+        accel = input.y;
+        steer = input.x;
+        Go();
     }
 
-    void UnOverturn()
+    public void SetRotationToUpright()
     {
-        transform.rotation = new Quaternion(DefaultRotX, transform.rotation.y, DefaultRotZ,transform.rotation.w);
+        rb.transform.rotation = defaultRotation;
     }
 
     void Go()
@@ -130,19 +119,5 @@ public class VehicleMovementScript : MonoBehaviour
         }
 
 
-    }
-
-    public void EnterExitCar()
-    {
-        if(ActiveCar== false)
-        {
-            CarCam.gameObject.SetActive(true);
-            ActiveCar = true;
-        }
-        else if (ActiveCar == true)
-        {
-            CarCam.gameObject.SetActive(false);
-            ActiveCar = false;
-        }
     }
 }

@@ -201,12 +201,11 @@ GameObject:
   m_Component:
   - component: {fileID: 824665263433318130}
   - component: {fileID: 824665263433318128}
-  - component: {fileID: 824665263433318129}
   - component: {fileID: 1633316108}
   - component: {fileID: 1633316113}
-  - component: {fileID: 1633316112}
+  - component: {fileID: 729654488}
   m_Layer: 0
-  m_Name: ammo car 2.0
+  m_Name: Ammo and Repair Car (Nate)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -251,41 +250,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &824665263433318129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 824665263433318134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d8c9e2bf68bdb6458481754f8bc6892, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ActiveCar: 0
-  CarCam: {fileID: 824665264190496104}
-  SimpleDriving: 0
-  Speed: 1000
-  MaxSteeringAngle: 20
-  FRrot: 1
-  FLrot: 1
-  BRrot: 0
-  BLrot: 0
-  mH: 0
-  mV: 0
-  FrontRight: {fileID: 503156942170361810}
-  BackRight: {fileID: 503156942836761837}
-  FrontLeft: {fileID: 503156942250904729}
-  BackLeft: {fileID: 503156941959437886}
-  FRM: {fileID: 5302246707481502283}
-  BRM: {fileID: 5302246708148955508}
-  FLM: {fileID: 5302246707560341760}
-  BLM: {fileID: 5302246707189183399}
-  FourXFour: 1
-  accel: 0
-  steer: 0
-  PlayerClose: 0
 --- !u!65 &1633316108
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -312,7 +276,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 10
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1633316112
+--- !u!114 &729654488
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -321,14 +285,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 824665263433318134}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bb3e2e3998cdcb489f28b5b4db0965a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1cf5529f2c09e4a4591e41aee2175033, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mover:
-    Enabled: 1
-    speed: 20
   ammoBoxes: 0
   maxAmmoBoxes: 3
+  vehicleMovementScript:
+    Speed: 1000
+    MaxSteeringAngle: 15
+    FRrot: 1
+    FLrot: 1
+    BRrot: 0
+    BLrot: 0
+    defaultRotation: {x: 0, y: 0, z: 0, w: 0}
+    mH: 0
+    mV: 0
+    FrontRight: {fileID: 503156942170361810}
+    BackRight: {fileID: 503156942836761837}
+    FrontLeft: {fileID: 503156942250904729}
+    BackLeft: {fileID: 503156941959437886}
+    FRM: {fileID: 5302246707481502283}
+    BRM: {fileID: 5302246708148955508}
+    FLM: {fileID: 5302246707560341760}
+    BLM: {fileID: 5302246707189183399}
+    FourXFour: 1
+    accel: 0
+    steer: 0
+    PlayerClose: 0
+  health:
+    healthBar: {fileID: 0}
+    maxHealth: 1
+    currentHealth: 0
+  nearbyInteractables: []
+  scrapCount: 100
 --- !u!1 &824665264190496108
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,13 +330,14 @@ GameObject:
   - component: {fileID: 824665264190496104}
   - component: {fileID: 824665264190496105}
   - component: {fileID: 824665264190496110}
+  - component: {fileID: 17063336}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &824665264190496111
 Transform:
   m_ObjectHideFlags: 0
@@ -355,8 +345,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 824665264190496108}
-  m_LocalRotation: {x: 0.07223565, y: -0.00021692952, z: 0.003469894, w: 0.99738157}
-  m_LocalPosition: {x: 0, y: 5.13, z: -10.59}
+  m_LocalRotation: {x: 0.12629785, y: -0.0000000085342995, z: 0.0000000010865643, w: 0.99199235}
+  m_LocalPosition: {x: 0, y: 6.7200003, z: -17.270004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 824665263433318130}
@@ -385,9 +375,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.01
   far clip plane: 3000
-  field of view: 60
+  field of view: 51
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -444,6 +434,40 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &17063336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824665264190496108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowDebugText: 0
+  m_ShowCameraFrustum: 1
+  m_IgnoreTimeScale: 0
+  m_WorldUpOverride: {fileID: 0}
+  m_UpdateMethod: 2
+  m_BlendUpdateMethod: 1
+  m_DefaultBlend:
+    m_Style: 1
+    m_Time: 2
+    m_CustomCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  m_CustomBlends: {fileID: 0}
+  m_CameraCutEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_CameraActivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &824665264929636446
 GameObject:
   m_ObjectHideFlags: 0
@@ -1440,14 +1464,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3228275624972404776, guid: f3e85b18c94fc2f469abc78faf201f3c, type: 3}
   m_PrefabInstance: {fileID: 824665264715366506}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &5302246708148955508 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4820138003035154718, guid: f3e85b18c94fc2f469abc78faf201f3c, type: 3}
-  m_PrefabInstance: {fileID: 824665264715366506}
-  m_PrefabAsset: {fileID: 0}
 --- !u!146 &503156942836761837 stripped
 WheelCollider:
   m_CorrespondingSourceObject: {fileID: 975695772588180615, guid: f3e85b18c94fc2f469abc78faf201f3c, type: 3}
+  m_PrefabInstance: {fileID: 824665264715366506}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5302246708148955508 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4820138003035154718, guid: f3e85b18c94fc2f469abc78faf201f3c, type: 3}
   m_PrefabInstance: {fileID: 824665264715366506}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3568175119425007352

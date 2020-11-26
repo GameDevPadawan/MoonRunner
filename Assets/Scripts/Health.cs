@@ -12,6 +12,7 @@ public class Health
     [SerializeField] 
     private float maxHealth = 1;
     public float MaxHealth => maxHealth;
+    [SerializeField]
     private float currentHealth;
 
     public float CurrentHealth

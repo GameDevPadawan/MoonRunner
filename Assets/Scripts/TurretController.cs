@@ -101,6 +101,11 @@ public class TurretController : MonoBehaviour, IReloadable, IRepairable, IDamage
     {
         health.Heal(amount);
     }
+
+    public float GetRepairAmountNeeded()
+    {
+        return health.MaxHealth - health.CurrentHealth;
+    }
     #endregion IRepairable Implementation
 
     #region IDamageable Implementation

@@ -53,4 +53,9 @@ public class MainBaseController : MonoBehaviour, IDamageable, IKillable, IRepair
     {
         health.Heal(amount);
     }
+
+    public float GetRepairAmountNeeded()
+    {
+        return health.MaxHealth - health.CurrentHealth;
+    }
 }

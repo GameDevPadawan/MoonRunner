@@ -2,4 +2,6 @@
 {
     void RepairFully();
     void RepairAmount(float amount);
+
+    float GetRepairAmountNeeded();
 }

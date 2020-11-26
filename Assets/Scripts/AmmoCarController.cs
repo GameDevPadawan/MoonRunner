@@ -31,7 +31,8 @@ public class AmmoCarController : CarControllerBase, IReloadable
         cameraObject.SetActive(controlEnabled);
         if (controlEnabled)
         {
-            vehicleMovementScript.HandleMovement();
+            Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            vehicleMovementScript.HandleMovement(input);
             if (InteractPressed())
             {
                 TryToInteract();
