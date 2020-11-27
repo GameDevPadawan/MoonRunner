@@ -163,6 +163,14 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 2f13e153767560c47a5995acc0ae81d2, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 7d1ac4c7b032e8f49bc876cc8cc042e6, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 09e9841b8bc0906449aa22404d5063ef, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 7d1ac4c7b032e8f49bc876cc8cc042e6, type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4b885200315dcd74f98c5d567e2c755f, type: 2}
     - target: {fileID: 919132149155446097, guid: 7d1ac4c7b032e8f49bc876cc8cc042e6, type: 3}
       propertyPath: m_Name
       value: ammo factory v 1.0.

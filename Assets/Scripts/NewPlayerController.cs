@@ -27,6 +27,7 @@ public class NewPlayerController : MonoBehaviour, IReloadable, IDamageable, IKil
     {
         supportedInteractionInterfaces = new List<Type>() { typeof(IReloadable), typeof(IRepairable) };
         vehicleMovementScript.Initialize(GetComponent<Rigidbody>());
+        health.Initialize(this.gameObject);
     }
 
     protected void Update()
@@ -73,6 +74,8 @@ public class NewPlayerController : MonoBehaviour, IReloadable, IDamageable, IKil
             this.scrap.Collect(otherAsCollectable.Collect());
             return;
         }
+
+
         // TODO This adds duplicates of everything that has a matching interface.
         foreach (Type supportedInterface in supportedInteractionInterfaces)
         {
@@ -128,6 +131,16 @@ public class NewPlayerController : MonoBehaviour, IReloadable, IDamageable, IKil
     public void TakeDamage(float damage)
     {
         health.TakeDamage(damage);
+    }
+
+    public bool IsValidTarget()
+    {
+        return true;
+    }
+
+    public TargetTypes GetTargetType()
+    {
+        return TargetTypes.Friendly;
     }
 
     public void Kill()

@@ -47,10 +47,6 @@ public class TurretController : MonoBehaviour, IReloadable, IRepairable, IDamage
         EnemyController enemy = other.GetComponent<EnemyController>();
         if (enemy != null)
         {
-            // If we have infinite ammo we should not tell the enemy to agro us.
-            // This is when the base turrets are shooting enemies.
-            // We want the enemies to shoot the base not the turrets.
-            if(!shooting.HasInfiniteAmmo) enemy.ReceiveAgro(this.gameObject);
             if (targetting != null)
             {
                 targetting.OnTriggerEnter(other);
@@ -63,10 +59,6 @@ public class TurretController : MonoBehaviour, IReloadable, IRepairable, IDamage
         EnemyController enemy = other.GetComponent<EnemyController>();
         if (enemy != null)
         {
-            // If we have infinite ammo we should not tell the enemy to agro us.
-            // This is when the base turrets are shooting enemies.
-            // We want the enemies to shoot the base not the turrets.
-            if (!shooting.HasInfiniteAmmo) enemy.LoseAgro();
             if (targetting != null)
             {
                 targetting.OnTriggerExit(other);
@@ -112,6 +104,18 @@ public class TurretController : MonoBehaviour, IReloadable, IRepairable, IDamage
     public void TakeDamage(float amount)
     {
         health.TakeDamage(amount);
+    }
+
+    public bool IsValidTarget()
+    {
+        // Turrets are valid targets unless they have infinite ammo.
+        //   This is needed because the base turrets should not be targetted.
+        return !this.shooting.HasInfiniteAmmo;
+    }
+
+    public TargetTypes GetTargetType()
+    {
+        return TargetTypes.Friendly;
     }
     #endregion IDamageable Implementation
 

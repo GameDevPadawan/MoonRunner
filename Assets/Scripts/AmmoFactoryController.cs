@@ -65,6 +65,11 @@ public class AmmoFactoryController : MonoBehaviour
             // Set the time of last reload to 
             timeOfLastReload = Time.time;
         }
+        IRepairable repairable = other.GetComponent<IRepairable>();
+        if (repairable != null)
+        {
+            repairable.RepairFully();
+        }
     }
 
     private void OnTriggerExit(Collider other)

@@ -26,22 +26,14 @@ public class MainBaseController : MonoBehaviour, IDamageable, IKillable, IRepair
         health.TakeDamage(damage);
     }
 
-    private void OnTriggerEnter(Collider other)
+    bool IDamageable.IsValidTarget()
     {
-        EnemyController enemy = other.GetComponent<EnemyController>();
-        if (enemy != null)
-        {
-            enemy.ReceiveAgro(this.gameObject);
-        }
+        return true;
     }
 
-    private void OnTriggerExit(Collider other)
+    public TargetTypes GetTargetType()
     {
-        EnemyController enemy = other.GetComponent<EnemyController>();
-        if (enemy != null)
-        {
-            enemy.LoseAgro();
-        }
+        return TargetTypes.Friendly;
     }
 
     public void RepairFully()

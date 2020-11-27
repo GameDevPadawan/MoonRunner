@@ -58,6 +58,16 @@ public class PlayerController : MonoBehaviour, IDamageable, IKillable, IYeetable
         health.TakeDamage(damage);
     }
 
+    public bool IsValidTarget()
+    {
+        return true;
+    }
+
+    public TargetTypes GetTargetType()
+    {
+        return TargetTypes.Friendly;
+    }
+
     public void YEET()
     {
         Rigidbody rb = this.gameObject.GetComponent<Rigidbody>();

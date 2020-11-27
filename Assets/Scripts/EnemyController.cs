@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,13 +12,16 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable, IWaypointM
     [SerializeField]
     private NavMeshMover mover;
     private GameObject agroTarget;
+    private float distanctToAgroTarget => hasAgro ? Vector3.Distance(transform.position, agroTarget.transform.position) : float.PositiveInfinity;
     private bool hasAgro => agroTarget != null;
     [SerializeField]
     private float damage = 1;
     [SerializeField]
     private float secondsBetweenShots = 1;
     private float timeOfLastShot;
-    private bool canShoot => Time.time - timeOfLastShot > secondsBetweenShots;
+    private bool shootIntervalElapsed => Time.time - timeOfLastShot > secondsBetweenShots;
+    private bool closeEnoughToShoot => hasAgro && distanctToAgroTarget < targettingSphereCollider.radius;
+    private bool canShoot => shootIntervalElapsed && closeEnoughToShoot;
     [SerializeField]
     private Health health;
     public Health Health => health;
@@ -27,6 +31,8 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable, IWaypointM
     public Enemy ScriptableObject => enemyScriptableObject;
     [SerializeField]
     private GameObject[] scrapsWeCanSpawn;
+    private List<GameObject> nearbyIdamageables = new List<GameObject>();
+    private SphereCollider targettingSphereCollider;
 
     private void OnDrawGizmosSelected()
     {
@@ -35,6 +41,7 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable, IWaypointM
 
     void Awake()
     {
+        targettingSphereCollider = GetComponent<SphereCollider>();
         health.Initialize(this.gameObject, enemyScriptableObject.maxHealth);
         mover.Initialize(GetComponent<NavMeshAgent>(), Waypoints);
     }
@@ -49,7 +56,7 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable, IWaypointM
             {
                 if (disableableTarget.IsDisabled())
                 {
-                    agroTarget = null;
+                    LoseAgro(agroTarget);
                 }
             }
         }
@@ -58,10 +65,7 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable, IWaypointM
             IDamageable damageableTarget = agroTarget.GetComponent<IDamageable>();
             if (damageableTarget != null)
             {
-                // TODO (Nate) fix enemy so they move to the target and then shoot.
-                //      This was tough because the nav agents make it hard to know when they are done moving.
-                //      For now enemies will shoot as long as they have a target.
-                if (canShoot /*&& mover.HasReachedTarget*/) shoot(damageableTarget);
+                if (canShoot) shoot(damageableTarget);
             }
         }
     }
@@ -104,19 +108,37 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable, IWaypointM
         Destroy(this.gameObject);
     }
 
-    public void ReceiveAgro(GameObject gameObject)
+    private void ReceiveAgro(GameObject gameObject)
     {
-        agroTarget = gameObject;
+        nearbyIdamageables.Add(gameObject);
+        if (agroTarget == null)
+        {
+            agroTarget = nearbyIdamageables.FirstOrDefault();
+        }
     }
 
-    public void LoseAgro()
+    private void LoseAgro(GameObject gameObject)
     {
-        agroTarget = null;
+        nearbyIdamageables.Remove(gameObject);
+        if (agroTarget == gameObject)
+        {
+            agroTarget = nearbyIdamageables.FirstOrDefault();
+        }
     }
 
     public void TakeDamage(float damage)
     {
         health.TakeDamage(damage);
+    }
+
+    public bool IsValidTarget()
+    {
+        return true;
+    }
+
+    public TargetTypes GetTargetType()
+    {
+        return TargetTypes.Enemy;
     }
 
     public void SetWaypoints(Vector3[] waypoints)
@@ -128,5 +150,27 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable, IWaypointM
     public void SignalWaypointReached(WaypointNode waypointNodeReched)
     {
         ((IWaypointMoveable)mover).SignalWaypointReached(waypointNodeReched);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        IDamageable otherAsDamageable = other.gameObject.GetComponent<IDamageable>();
+        if (otherAsDamageable != null 
+            && otherAsDamageable.IsValidTarget() 
+            && otherAsDamageable.GetTargetType() == TargetTypes.Friendly)
+        {
+            ReceiveAgro(other.gameObject);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        IDamageable otherAsDamageable = other.gameObject.GetComponent<IDamageable>();
+        if (otherAsDamageable != null
+            && otherAsDamageable.IsValidTarget()
+            && otherAsDamageable.GetTargetType() == TargetTypes.Friendly)
+        {
+            LoseAgro(other.gameObject);
+        }
     }
 }
