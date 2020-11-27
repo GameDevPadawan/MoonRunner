@@ -21,7 +21,7 @@ public class NewPlayerController : MonoBehaviour, IReloadable, IDamageable, IKil
     private List<GameObject> nearbyInteractables = new List<GameObject>();
     public event EventHandler<GameObject> OnDeath;
     [SerializeField]
-    private int scrapCount = 100;
+    private Scrap scrap;
 
     protected void Awake()
     {
@@ -70,7 +70,7 @@ public class NewPlayerController : MonoBehaviour, IReloadable, IDamageable, IKil
         ICollectable otherAsCollectable = other.GetComponent<ICollectable>();
         if (otherAsCollectable != null)
         {
-            this.scrapCount += otherAsCollectable.Collect();
+            this.scrap.Collect(otherAsCollectable.Collect());
             return;
         }
         // TODO This adds duplicates of everything that has a matching interface.
@@ -105,8 +105,8 @@ public class NewPlayerController : MonoBehaviour, IReloadable, IDamageable, IKil
     {
         float repairAmountNeeded = repairable.GetRepairAmountNeeded();
         // repair as much as we can afford or the total amount needed to get to full health
-        int amountToRepair = (int)Mathf.Min(scrapCount, repairAmountNeeded);
-        scrapCount -= amountToRepair;
+        int amountToRepair = (int)Mathf.Min(scrap.Amount, repairAmountNeeded);
+        scrap.Spend(amountToRepair);
         repairable.RepairAmount(amountToRepair);
     }
 

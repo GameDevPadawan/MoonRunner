@@ -1,9 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
+[Serializable]
 public class Scrap
 {
     public Action<int> OnScrapChanged;
+    [SerializeField]
     private int _amount;
     public int Amount
     {
