@@ -4,7 +4,7 @@ using UnityEngine;
 [Serializable]
 public class Scrap
 {
-    public Action<int> OnScrapChanged;
+    public event Action OnScrapChanged;
     [SerializeField]
     private int _amount;
     public int Amount
@@ -12,7 +12,7 @@ public class Scrap
         get => _amount;
         set {
             _amount = value;
-            OnScrapChanged?.Invoke(value);
+            OnScrapChanged?.Invoke();
         }
     }
 

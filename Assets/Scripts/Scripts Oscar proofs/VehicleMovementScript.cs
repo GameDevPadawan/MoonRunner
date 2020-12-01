@@ -12,10 +12,19 @@ public class VehicleMovementScript
     public Quaternion defaultRotation;
     public float mH, mV;
 
+
+    [Header("Center of Mass Control - Do not change without good reason")]
+    [SerializeField]
+    private Vector3 centerOfMassOffset;
+    [SerializeField]
+    private Vector3 localCenterOfMass;
+    private Vector3 defaultCenterOfMass;
+
     //Complex drive with wheels collider
     [Header("Put here de object with wheel collider")]
     [SerializeField]
     WheelCollider FrontRight, BackRight, FrontLeft, BackLeft;
+    private float sidewaysFrictionDefaultValue;
 
     // This is for the child wheel meshes.
     [Header("Put here the childs with wheel meshes")]
@@ -41,7 +50,9 @@ public class VehicleMovementScript
         {
             isInitialized = true;
             rb = rigidbody;
-            defaultRotation = rb.transform.rotation; 
+            defaultRotation = Quaternion.Euler(rb.rotation.eulerAngles.x, 0, rb.rotation.eulerAngles.z);
+            defaultCenterOfMass = rb.centerOfMass;
+            sidewaysFrictionDefaultValue = FrontLeft.sidewaysFriction.extremumValue;
         }
     }
 
@@ -49,6 +60,8 @@ public class VehicleMovementScript
     public void HandleMovement(Vector2 input)
     {
         if (!isInitialized) throw new Exception($"{this.GetType().Name} must be intialized by the MonoBehavior using it.");
+        rb.centerOfMass = defaultCenterOfMass + centerOfMassOffset;
+        localCenterOfMass = rb.centerOfMass;
         accel = input.y;
         steer = input.x;
         Go();
@@ -56,7 +69,7 @@ public class VehicleMovementScript
 
     public void SetRotationToUpright()
     {
-        rb.transform.rotation = defaultRotation;
+        rb.transform.rotation = Quaternion.Euler(defaultRotation.eulerAngles.x, rb.rotation.eulerAngles.y, defaultRotation.eulerAngles.z);
     }
 
     void Go()

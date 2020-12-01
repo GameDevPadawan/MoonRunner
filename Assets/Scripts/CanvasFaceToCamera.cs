@@ -14,7 +14,7 @@ public class CanvasFaceToCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (mainCamera == null)
+        /*if (mainCamera == null)
         {
             // This is a patch on a REAL PROBLEM
 
@@ -23,7 +23,7 @@ public class CanvasFaceToCamera : MonoBehaviour
             //   We either need only one camera that moves around or we need ways to update the active camera when it is changed
             //   This could be a very costly check every frame if we do it wrong. Need to be careful.
             mainCamera = Camera.main;
-        }
+        }*/
         transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward, mainCamera.transform.rotation * Vector3.up);
     }
 }

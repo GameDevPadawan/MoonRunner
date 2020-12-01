@@ -33,6 +33,10 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable, IWaypointM
     private GameObject[] scrapsWeCanSpawn;
     private List<GameObject> nearbyIdamageables = new List<GameObject>();
     private SphereCollider targettingSphereCollider;
+    private AudioManager audioManager;
+
+    //Added by Óscar to particle effect
+    public GameObject explosion;
 
     private void OnDrawGizmosSelected()
     {
@@ -44,7 +48,10 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable, IWaypointM
         targettingSphereCollider = GetComponent<SphereCollider>();
         health.Initialize(this.gameObject, enemyScriptableObject.maxHealth);
         mover.Initialize(GetComponent<NavMeshAgent>(), Waypoints);
+        audioManager = FindObjectOfType<AudioManager>();
+        audioManager.Play("enemyHovering");
     }
+   
 
     void Update()
     {
@@ -75,6 +82,7 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable, IWaypointM
     {
         timeOfLastShot = Time.time;
         damageableTarget.TakeDamage(this.damage);
+        audioManager.PlayOneShot("laserGunShot");
     }
 
     void HandleMovement()
@@ -92,10 +100,17 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable, IWaypointM
 
     public void Kill()
     {
+        
+        audioManager.PlayOneShot("genericExplosion");
+
         // UnityEngine.Random helps us select a random scrap to spawn. 
         //   We could replace this with a scrap pool and let it handle the random selection.
         // We use Range from 0 to array.Length because this method uses the upper bound as exclusive instead of inclusive like the lower bound.
-        Instantiate(scrapsWeCanSpawn[UnityEngine.Random.Range(0, scrapsWeCanSpawn.Length)], this.transform.position, this.transform.rotation);
+        ParticleSystem exppart = Instantiate(explosion, transform.position, transform.rotation).GetComponent<ParticleSystem>();
+        exppart.Play();
+        Destroy(exppart.gameObject, exppart.main.duration);
+        GameObject scrap = Instantiate(scrapsWeCanSpawn[UnityEngine.Random.Range(0, scrapsWeCanSpawn.Length)], this.transform.position + Vector3.up * 2, this.transform.rotation);
+        AddRandomEjectionForceToScrap(scrap);
         health.Kill();
         OnDeath?.Invoke(this, this.gameObject);
         // TODO is this a race condition?
@@ -106,6 +121,15 @@ public class EnemyController : MonoBehaviour, IDamageable, IKillable, IWaypointM
         // Or, could we make it the subscirbers problem, meaning subscribers to OnDeath know not to check for null equality?
         // (Late addition comment: I added a delay so we can see the add force. This delay should be removed after the add force.)
         Destroy(this.gameObject);
+
+        void AddRandomEjectionForceToScrap(GameObject s)
+        {
+            Vector3 randomForce = UnityEngine.Random.onUnitSphere;
+            randomForce.y = 1;
+            randomForce.Normalize();
+            randomForce *= 10;
+            s.GetComponent<Rigidbody>().AddForce(randomForce, ForceMode.Impulse);
+        }
     }
 
     private void ReceiveAgro(GameObject gameObject)

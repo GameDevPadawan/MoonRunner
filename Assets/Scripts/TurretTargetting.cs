@@ -18,6 +18,7 @@ public class TurretTargetting
     private float rotationSpeedRadians = 1;
     private float rotationSpeedDegrees => rotationSpeedRadians * 180 / Mathf.PI;
     private bool isInitialized = false;
+    private AudioManager audioManager;
 
     /// <summary>
     /// Initialize is meant to replace any actions that would ususally happen in the constructor.
@@ -27,6 +28,7 @@ public class TurretTargetting
         if (!isInitialized)
         {
             isInitialized = true;
+            audioManager = GameObject.FindObjectOfType<AudioManager>();
         }
     }
 
@@ -39,7 +41,7 @@ public class TurretTargetting
     /// </returns>
     public bool IsAimedAtTarget()
     {
-        if (currentTarget == null) return false;
+        if (!hasTarget) return false;
 
         Vector3 directionToTarget = (currentTarget.transform.position - barrelTransform.position).normalized;
         float angleToTarget = Quaternion.Angle(barrelTransform.rotation, Quaternion.LookRotation(directionToTarget));
@@ -65,7 +67,7 @@ public class TurretTargetting
         {
             currentTarget = GetNewTarget();
         }
-        if (currentTarget != null)
+        if (hasTarget && !IsAimedAtTarget())
         {
             StepRotationTowardsCurrentTarget();
         }
@@ -73,6 +75,7 @@ public class TurretTargetting
 
     private void StepRotationTowardsCurrentTarget()
     {
+        audioManager.PlayOneShot("turretRotation");
         // Store our starting rotation so we can use it to step ttowards the desired rotation
         Quaternion currentTurretRotation = turretTransform.rotation;
         Quaternion currentBarrelRotation = barrelTransform.rotation;
@@ -119,18 +122,18 @@ public class TurretTargetting
 
     #region Events
 
-    public void OnTriggerEnter(Collider other)
+    public void AddToTargetList(GameObject target)
     {
-        if (!targetList.Contains(other.gameObject))
+        if (!targetList.Contains(target))
         {
-            targetList.Add(other.gameObject); 
+            targetList.Add(target); 
         }
     }
 
-    public void OnTriggerExit(Collider other)
+    public void RemoveFromTargetList(GameObject target)
     {
-        if (currentTarget == other.gameObject) currentTarget = null;
-        targetList.Remove(other.gameObject);
+        if (currentTarget == target) currentTarget = null;
+        targetList.Remove(target);
     }
     #endregion Events
 }

@@ -9,7 +9,7 @@ public class SpawnPoint : MonoBehaviour
 
     private Vector3[] _pathNodes;
 
-    private void Start()
+    private void Awake()
     {
         _pathNodes = gameObject.GetComponentsInChildren<WaypointNode>().Select(x => x.gameObject.transform.position).ToArray();
     }

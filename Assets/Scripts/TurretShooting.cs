@@ -8,6 +8,8 @@ using UnityEngine.UI;
 public class TurretShooting
 {
     [SerializeField]
+    private string shootSoundEffectName;
+    [SerializeField]
     private float damagePerShot;
     [SerializeField]
     private float secondsBetweenShots;
@@ -37,6 +39,8 @@ public class TurretShooting
     [SerializeField]
     private bool hasInfiniteAmmo = false;
     public bool HasInfiniteAmmo => hasInfiniteAmmo;
+    private AudioManager audioManager;
+    public event Action Reloaded;
 
     public void Initialize()
     {
@@ -44,6 +48,7 @@ public class TurretShooting
         {
             isInitialized = true;
             RefillAmmo();
+            audioManager = GameObject.FindObjectOfType<AudioManager>();
         }
     }
 
@@ -52,20 +57,28 @@ public class TurretShooting
         Initialize();
         if (canShoot)
         {
-            if (!hasInfiniteAmmo) AmmoCount--;
-            target.TakeDamage(damagePerShot);
-            timeOfLastShot = Time.time;
+            shoot(target);
         }
+    }
+
+    private void shoot(IDamageable target)
+    {
+        if (!hasInfiniteAmmo) AmmoCount--;
+        target.TakeDamage(damagePerShot);
+        timeOfLastShot = Time.time;
+        audioManager.PlayOneShot(shootSoundEffectName);
     }
 
     public void RefillAmmo()
     {
         AmmoCount = maxAmmo;
+        Reloaded?.Invoke();
     }
 
     public void RefillAmmo(int amount)
     {
         AmmoCount = amount;
+        Reloaded?.Invoke();
     }
 
     public bool NeedsReload()

@@ -9,8 +9,10 @@ public class TurretController : MonoBehaviour, IReloadable, IRepairable, IDamage
 {
     [SerializeField]
     private TurretTargetting targetting;
+    public TurretTargetting Targetting => targetting;
     [SerializeField]
     private TurretShooting shooting;
+    public TurretShooting Shooting => shooting;
     [SerializeField]
     private Health health;
     private bool disabled;
@@ -30,6 +32,8 @@ public class TurretController : MonoBehaviour, IReloadable, IRepairable, IDamage
     void Awake()
     {
         health.Initialize(this.gameObject);
+        targetting.Initialize();
+        shooting.Initialize();
     }
 
     // Update is called once per frame
@@ -49,7 +53,7 @@ public class TurretController : MonoBehaviour, IReloadable, IRepairable, IDamage
         {
             if (targetting != null)
             {
-                targetting.OnTriggerEnter(other);
+                targetting.AddToTargetList(other.gameObject);
             }
         }
     }
@@ -61,7 +65,7 @@ public class TurretController : MonoBehaviour, IReloadable, IRepairable, IDamage
         {
             if (targetting != null)
             {
-                targetting.OnTriggerExit(other);
+                targetting.RemoveFromTargetList(other.gameObject);
             }
         }
     }

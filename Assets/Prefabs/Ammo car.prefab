@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2619031597634105463}
   - component: {fileID: 1382193415}
-  - component: {fileID: 1382193413}
   m_Layer: 0
   m_Name: Ammo car
   m_TagString: Untagged
@@ -27,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 9077811323198285509}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2589, y: 1.2589, z: 1.2589}
   m_Children:
   - {fileID: 1093605992151892760}
   m_Father: {fileID: 0}
@@ -46,22 +45,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 1.18, z: 0}
---- !u!114 &1382193413
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9077811323198285509}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bb3e2e3998cdcb489f28b5b4db0965a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mover:
-    Enabled: 1
-    speed: 20
-  ammoBoxes: 1
 --- !u!1001 &623745964713092339
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -145,14 +128,38 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 999c6ae856ff06741bfe351933fb600b, type: 2}
+    - target: {fileID: -2093772787462966335, guid: a07a554a63e8ee1418df562a882c58bf, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0785
+      objectReference: {fileID: 0}
+    - target: {fileID: -2093772787462966335, guid: a07a554a63e8ee1418df562a882c58bf, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0725
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a07a554a63e8ee1418df562a882c58bf, type: 3}
       propertyPath: m_Name
       value: Ammo Car v.1.0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2455436778368784947, guid: a07a554a63e8ee1418df562a882c58bf, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0031
+      objectReference: {fileID: 0}
+    - target: {fileID: 2455436778368784947, guid: a07a554a63e8ee1418df562a882c58bf, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0105
       objectReference: {fileID: 0}
     - target: {fileID: 3648911592011993786, guid: a07a554a63e8ee1418df562a882c58bf, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 09e9841b8bc0906449aa22404d5063ef, type: 2}
+    - target: {fileID: 7324423298343204382, guid: a07a554a63e8ee1418df562a882c58bf, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: 7324423298343204382, guid: a07a554a63e8ee1418df562a882c58bf, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0208
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a07a554a63e8ee1418df562a882c58bf, type: 3}
 --- !u!4 &1093605992151892760 stripped

@@ -14,8 +14,8 @@ public class SpawnManager : MonoBehaviour
     public float timeBetweenWaves = 10f;
     public SpawnPoint[] spawnPoints;
     public EnemyWave[] waves;
-    
 
+    private AudioManager audioManager;
     private int _waveIndex = 0;
     private float _waveCountDown;
     private bool WaveStarted => _waveCountDown <= 0;
@@ -30,6 +30,7 @@ public class SpawnManager : MonoBehaviour
     private void Start()
     {
         _waveCountDown = timeBeforeFirstWave;
+        audioManager = FindObjectOfType<AudioManager>();
     }
     
     private void Update()
@@ -84,6 +85,7 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnEnemy(GameObject prefabToSpawn, Transform spawnPoint, Vector3[] waypoints)
     {
+        audioManager.PlayOneShot("enemySpawn");
         var enemy = Instantiate(prefabToSpawn, spawnPoint.position, spawnPoint.rotation);
         EnemyController enemyController = enemy.GetComponent<EnemyController>();
         enemyController.OnDeath += OnSpawnedEnemyKilled;

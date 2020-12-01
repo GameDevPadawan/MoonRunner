@@ -76,7 +76,7 @@ public class NavMeshMover : IWaypointMoveable
 
     void IWaypointMoveable.SignalWaypointReached(WaypointNode waypointNodeReched)
     {
-        if (waypointNodeReched != null && waypointNodeReched.gameObject != null)
+        if (waypointNodeReched != null && waypointNodeReched.gameObject != null && moveQueue.Contains(waypointNodeReched.transform.position))
         {
             moveQueue.Dequeue();
         }

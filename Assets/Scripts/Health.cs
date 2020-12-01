@@ -6,10 +6,10 @@ using UnityEngine.UI;
 [Serializable]
 public class Health
 {
-    public event Action FullyHealed;
+    public event Action OnHealed;
     [SerializeField]
     private Image healthBar;
-    [SerializeField] 
+    [SerializeField]
     private float maxHealth = 1;
     public float MaxHealth => maxHealth;
     [SerializeField]
@@ -17,14 +17,11 @@ public class Health
 
     public float CurrentHealth
     {
-        get
-        {
-            return currentHealth;
-        }
+        get => currentHealth;
         private set
         {
             currentHealth = value;
-            healthBar.fillAmount = currentHealth / maxHealth;
+            if (healthBar) healthBar.fillAmount = currentHealth / maxHealth;
             if (!IsDead)
             {
                 parentObject.GetComponent<IDisableable>()?.Enable();
@@ -33,8 +30,8 @@ public class Health
     }
 
     public bool IsDead => CurrentHealth <= 0;
-    public bool FullHealth => CurrentHealth >= maxHealth;
-    event EventHandler<GameObject> OnDamaged;
+    public bool IsFullHealth => CurrentHealth >= maxHealth;
+    public event Action OnDamaged;
     private GameObject parentObject;
     private bool isInitialized = false;
 
@@ -48,7 +45,7 @@ public class Health
             {
                 this.maxHealth = maximumHealth;
             }
-            CurrentHealth = maxHealth; 
+            CurrentHealth = maxHealth;
         }
     }
 
@@ -58,9 +55,9 @@ public class Health
 
         if (IsDead || damage <= 0)
             return;
-        
+
         CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, maxHealth);
-        OnDamaged?.Invoke(this, parentObject);
+        OnDamaged?.Invoke();
 
         if (IsDead)
         {
@@ -72,31 +69,17 @@ public class Health
     public void Heal()
     {
         CurrentHealth = maxHealth;
+        OnHealed?.Invoke();
     }
 
     public void Heal(float healAmount)
     {
         CurrentHealth = Mathf.Clamp(CurrentHealth + healAmount, 0, maxHealth);
+        OnHealed?.Invoke();
     }
-    
-    //public void Regenerate(float hpRegen, float interval) => StartCoroutine(Regen(hpRegen, interval));
-
-    //private IEnumerator Regen(float hpRegen, float interval)
-    //{
-    //    while (true)
-    //    {
-    //        Heal(hpRegen);
-    //        if (FullHealth)
-    //        {
-    //            FullyHealed?.Invoke();
-    //            break;
-    //        }
-    //        yield return new WaitForSeconds(interval);
-    //    }
-    //}
 
     public void Kill()
     {
         TakeDamage(CurrentHealth);
-    } 
+    }
 }

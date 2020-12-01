@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    public bool PlaySong;
     public Sound[] sounds;
 
 
@@ -16,12 +17,19 @@ public class AudioManager : MonoBehaviour
             sound.audioSource.volume = sound.volume;
             sound.audioSource.pitch = sound.pitch;
             sound.audioSource.loop = sound.loop;
+            sound.audioSource.spatialBlend = sound.spatialBlend;
+            sound.audioSource.playOnAwake = sound.playOnAwake;
+            sound.audioSource.maxDistance = sound.maxDistance;
+            sound.audioSource.minDistance = sound.minDistance;
         }
     }
 
     void Start()
     {
-        Play("Level1SongDemo");
+        if (PlaySong)
+        {
+            Play("Level1SongDemo"); 
+        }
     }
 
     public void Play(string soundName)
@@ -41,7 +49,13 @@ public class AudioManager : MonoBehaviour
         var s = Array.Find(sounds, sound => sound.soundName == soundName);
         s?.audioSource.Pause();
     }
-    
+
+    public void Stop(string soundName)
+    {
+        var s = Array.Find(sounds, sound => sound.soundName == soundName);
+        s?.audioSource.Stop();
+    }
+
     public void UnPause(string soundName)
     {
         var s = Array.Find(sounds, sound => sound.soundName == soundName);
