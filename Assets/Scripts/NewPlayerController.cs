@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NewPlayerController : MonoBehaviour, IReloadable, IDamageable, IKillable, IRepairable
 {
@@ -208,9 +210,15 @@ public class NewPlayerController : MonoBehaviour, IReloadable, IDamageable, IKil
 
     public void Kill()
     {
-        // TODO kill player and reload scene
-        //   This should probably be handled by the gamemanager. Can be used by main base kill as well.
-        Debug.Log("You died.");
+        UIManager.Message("You died...");
+        StartCoroutine(Delay(3));
+    }
+
+    IEnumerator Delay(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        UIManager.UnlockAndRevealCursor();
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void RepairFully()

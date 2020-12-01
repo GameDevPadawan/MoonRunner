@@ -5693,6 +5693,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6910928522002271976, guid: 3bc784b661e3c8f4cb022f03aa79d62c, type: 3}
+      propertyPath: shooting.secondsBetweenShots
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6910928522823603570, guid: 3bc784b661e3c8f4cb022f03aa79d62c, type: 3}
+      propertyPath: shooting.secondsBetweenShots
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6910928523721784552, guid: 3bc784b661e3c8f4cb022f03aa79d62c, type: 3}
       propertyPath: m_Name
       value: End

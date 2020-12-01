@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(SphereCollider))]
 public class MainBaseController : MonoBehaviour, IDamageable, IKillable, IRepairable
@@ -18,7 +19,15 @@ public class MainBaseController : MonoBehaviour, IDamageable, IKillable, IRepair
 
     void IKillable.Kill()
     {
-        Debug.Log("You lose. Have you tried sucking less?");
+        UIManager.Message("Your main base died. You lose...");
+        StartCoroutine(Delay(3));
+    }
+
+    IEnumerator Delay(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        UIManager.UnlockAndRevealCursor();
+        SceneManager.LoadScene("MainMenu");
     }
 
     void IDamageable.TakeDamage(float damage)
